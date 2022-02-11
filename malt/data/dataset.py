@@ -192,7 +192,10 @@ class Dataset(torch.utils.data.Dataset):
         by : Union[Iterable, str]
             Attributes of class on which to batch.
 
-
+        Returns
+        -------
+        ret : Union[tuple, dgl.Graph, torch.Tensor]
+            Batched data, in order of keys passed in `by` argument.
 
         """
         

@@ -124,7 +124,7 @@ class GaussianProcessSupervisedModel(SupervisedModel):
             torch.ones(g.batch_size, 1),
         )
 
-    def condition(self, g):
+    def condition(self, g, **kwargs):
         if self.x_tr is None or self.y_tr is None:
             return self._blind_condition(g)
 
@@ -134,10 +134,11 @@ class GaussianProcessSupervisedModel(SupervisedModel):
             h,
             x_tr=self.x_tr.to(h.device),
             y_tr=self.y_tr.to(h.device),
+            **kwargs
         )
 
-    def loss(self, g, y):
+    def loss(self, g, y, **kwargs):
         h = self.representation(g)
         self.x_tr = h
         self.y_tr = y
-        return self.regressor.loss(h, y)
+        return self.regressor.loss(h, y, **kwargs)
