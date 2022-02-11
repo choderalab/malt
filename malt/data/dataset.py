@@ -184,17 +184,17 @@ class Dataset(torch.utils.data.Dataset):
 
     # @staticmethod
     def batch(self, points=None, by=['g', 'y']):
+        
+        from collections import defaultdict
+        ret = defaultdict(list)
 
         if points is None:
             points = self.points
 
         # guarantee keys are a list
-        by = by if isinstance(by, list) else [by]
+        by = [by] if isinstance(by, str) else by
 
-        from collections import defaultdict
-        ret = defaultdict(list)
-
-        # loop through the points
+        # loop through points
         for point in points:
             for key in by:
                 if key is 'g':
@@ -216,13 +216,17 @@ class Dataset(torch.utils.data.Dataset):
                     ret[key].append(point.extra[key])
 
         # collate batches
-        if 'g' in by:
-            ret['g'] = dgl.batch(ret['g'])
-            by.remove('g')
         for key in by:
-            ret[key] = torch.tensor(ret[key])[:,None]
+            if key == 'g':
+                ret['g'] = dgl.batch(ret['g'])
+            else:
+                ret[key] = torch.tensor(ret[key])[:,None]
         
+        # return batches
         ret = (*ret.values(), )
+        if len(ret) < 2:
+            ret = ret[0]
+        
         return ret
 
 
