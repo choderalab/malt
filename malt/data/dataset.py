@@ -182,8 +182,19 @@ class Dataset(torch.utils.data.Dataset):
             self._construct_extra()
         return self._extra
 
-    # @staticmethod
     def batch(self, points=None, by=['g', 'y']):
+        """Batches points by provided keys.
+
+        Parameters
+        ----------
+        points : list of Points
+            Defaults to all points in Dataset if none provided.
+        by : Union[Iterable, str]
+            Attributes of class on which to batch.
+
+
+
+        """
         
         from collections import defaultdict
         ret = defaultdict(list)
@@ -264,6 +275,10 @@ class Dataset(torch.utils.data.Dataset):
         ----------
         collate_fn : None or callable
             The function to gather data points.
+        group : Union[None, str]
+            If a group is provided (e.g., 'smiles'), batches data by SMILES groupings.
+        by : Union[Iterable, str]
+
 
         Returns
         -------
