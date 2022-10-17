@@ -1,4 +1,4 @@
-﻿malt.models.regressor.RBF
+malt.models.regressor.RBF
 =========================
 
 .. currentmodule:: malt.models.regressor
@@ -30,10 +30,6 @@
       ~RBF.extra_repr
       ~RBF.float
       ~RBF.forward
-      ~RBF.get_buffer
-      ~RBF.get_extra_state
-      ~RBF.get_parameter
-      ~RBF.get_submodule
       ~RBF.half
       ~RBF.load_state_dict
       ~RBF.modules
@@ -46,17 +42,13 @@
       ~RBF.register_buffer
       ~RBF.register_forward_hook
       ~RBF.register_forward_pre_hook
-      ~RBF.register_full_backward_hook
       ~RBF.register_parameter
       ~RBF.requires_grad_
-      ~RBF.set_extra_state
       ~RBF.share_memory
       ~RBF.state_dict
       ~RBF.to
-      ~RBF.to_empty
       ~RBF.train
       ~RBF.type
-      ~RBF.xpu
       ~RBF.zero_grad
    
    
@@ -69,6 +61,5 @@
    
       ~RBF.T_destination
       ~RBF.dump_patches
-      ~RBF.training
    
    

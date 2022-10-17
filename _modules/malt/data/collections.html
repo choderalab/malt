@@ -38,6 +38,19 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/supervised.html">Supervised learning demo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/supervised.html#intallation-and-imports">Intallation and imports</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/supervised.html#grab-data">Grab data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/supervised.html#model-definition">Model definition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/supervised.html#train-the-model">Train the model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/supervised.html#characterization">Characterization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/sequential.html">Sequential acquisition demo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/sequential.html#intallation-and-imports">Intallation and imports</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/sequential.html#grab-data">Grab data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/sequential.html#define-model">Define model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/sequential.html#define-agents">Define agents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/sequential.html#define-player">Define player</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/sequential.html#run-the-experiment">Run the experiment</a></li>
 </ul>
 
         </div>
@@ -68,9 +81,10 @@
 <span></span><span class="c1"># =============================================================================</span>
 <span class="c1"># IMPORTS</span>
 <span class="c1"># =============================================================================</span>
+<span class="kn">import</span> <span class="nn">dgl</span>
 <span class="kn">import</span> <span class="nn">dgllife</span>
 <span class="kn">from</span> <span class="nn">malt.data.dataset</span> <span class="kn">import</span> <span class="n">Dataset</span>
-<span class="kn">from</span> <span class="nn">malt.point</span> <span class="kn">import</span> <span class="n">Point</span>
+<span class="kn">from</span> <span class="nn">malt.molecule</span> <span class="kn">import</span> <span class="n">Molecule</span>
 <span class="kn">import</span> <span class="nn">copy</span>
 
 <span class="c1"># =============================================================================</span>
@@ -80,9 +94,10 @@
     <span class="n">idx</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="n">ds</span> <span class="o">=</span> <span class="p">[]</span>
     <span class="k">for</span> <span class="n">smiles</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">dgllife_dataset</span><span class="p">:</span>
-        <span class="n">point</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">smiles</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">y</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="n">extra</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;idx&quot;</span><span class="p">:</span> <span class="n">idx</span><span class="p">})</span>
+        <span class="n">g</span> <span class="o">=</span> <span class="n">dgl</span><span class="o">.</span><span class="n">add_self_loop</span><span class="p">(</span><span class="n">g</span><span class="p">)</span>
+        <span class="n">molecule</span> <span class="o">=</span> <span class="n">Molecule</span><span class="p">(</span><span class="n">smiles</span><span class="p">,</span> <span class="n">g</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;idx&#39;</span><span class="p">:</span> <span class="n">idx</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="n">y</span><span class="o">.</span><span class="n">item</span><span class="p">()})</span>
         <span class="n">idx</span> <span class="o">+=</span> <span class="mi">1</span>
-        <span class="n">ds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">point</span><span class="p">)</span>
+        <span class="n">ds</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">molecule</span><span class="p">)</span>
 
     <span class="n">ds</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
 
@@ -98,16 +113,17 @@
     <span class="s2">&quot;Lipophilicity&quot;</span><span class="p">,</span>
 <span class="p">]</span>
 
+<span class="k">def</span> <span class="nf">_get_collection</span><span class="p">(</span><span class="n">collection</span><span class="p">):</span>
+    <span class="kn">from</span> <span class="nn">dgllife.utils</span> <span class="kn">import</span> <span class="n">smiles_to_bigraph</span><span class="p">,</span> <span class="n">CanonicalAtomFeaturizer</span>
+    <span class="n">ds</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">dgllife</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">collection</span><span class="p">)(</span>
+        <span class="n">smiles_to_bigraph</span><span class="p">,</span> <span class="n">CanonicalAtomFeaturizer</span><span class="p">()</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">_dataset_from_dgllife</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
+
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">partial</span>
+
 <span class="k">for</span> <span class="n">collection</span> <span class="ow">in</span> <span class="n">COLLECTIONS</span><span class="p">:</span>
-
-    <span class="k">def</span> <span class="nf">_get_collection</span><span class="p">():</span>
-        <span class="kn">from</span> <span class="nn">dgllife.utils</span> <span class="kn">import</span> <span class="n">smiles_to_bigraph</span><span class="p">,</span> <span class="n">CanonicalAtomFeaturizer</span>
-        <span class="n">ds</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">dgllife</span><span class="o">.</span><span class="n">data</span><span class="p">,</span> <span class="n">collection</span><span class="p">)(</span>
-            <span class="n">smiles_to_bigraph</span><span class="p">,</span> <span class="n">CanonicalAtomFeaturizer</span><span class="p">()</span>
-        <span class="p">)</span>
-        <span class="k">return</span> <span class="n">_dataset_from_dgllife</span><span class="p">(</span><span class="n">ds</span><span class="p">)</span>
-
-    <span class="nb">globals</span><span class="p">()[</span><span class="n">collection</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span> <span class="o">=</span> <span class="n">_get_collection</span>
+    <span class="nb">globals</span><span class="p">()[</span><span class="n">collection</span><span class="o">.</span><span class="n">lower</span><span class="p">()]</span> <span class="o">=</span> <span class="n">partial</span><span class="p">(</span><span class="n">_get_collection</span><span class="p">,</span> <span class="n">collection</span><span class="o">=</span><span class="n">collection</span><span class="p">)</span>
 
 <div class="viewcode-block" id="linear_alkanes"><a class="viewcode-back" href="../../../autosummary/malt.data.collections.linear_alkanes.html#malt.data.collections.linear_alkanes">[docs]</a><span class="k">def</span> <span class="nf">linear_alkanes</span><span class="p">(</span><span class="n">max_carbon</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A toy dataset with linear alkanes from 1 to `max_carbon` carbons.</span>
@@ -129,10 +145,10 @@
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="n">dataset</span> <span class="o">=</span>  <span class="n">Dataset</span><span class="p">([</span><span class="n">Point</span><span class="p">(</span><span class="n">idx</span> <span class="o">*</span> <span class="s2">&quot;C&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_carbon</span><span class="o">+</span><span class="mi">1</span><span class="p">)])</span>
-    <span class="k">def</span> <span class="nf">annotate</span><span class="p">(</span><span class="n">point</span><span class="p">):</span>
-        <span class="n">point</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">point</span><span class="o">.</span><span class="n">smiles</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">point</span>
+    <span class="n">dataset</span> <span class="o">=</span>  <span class="n">Dataset</span><span class="p">([</span><span class="n">Molecule</span><span class="p">(</span><span class="n">idx</span> <span class="o">*</span> <span class="s2">&quot;C&quot;</span><span class="p">)</span> <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_carbon</span><span class="o">+</span><span class="mi">1</span><span class="p">)])</span>
+    <span class="k">def</span> <span class="nf">annotate</span><span class="p">(</span><span class="n">molecule</span><span class="p">):</span>
+        <span class="n">molecule</span><span class="o">.</span><span class="n">metadata</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;y&#39;</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">molecule</span><span class="o">.</span><span class="n">smiles</span><span class="p">))}</span>
+        <span class="k">return</span> <span class="n">molecule</span>
     <span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">annotate</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">dataset</span></div>
 </pre></div>
@@ -144,7 +160,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2020, Yuanqing Wang @ choderalab // MSKCC..</p>
+    <p>&#169; Copyright 2022, Yuanqing Wang @ choderalab // MSKCC..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

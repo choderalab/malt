@@ -1,4 +1,4 @@
-﻿malt.models.likelihood.HomoschedasticGaussianLikelihood
+malt.models.likelihood.HomoschedasticGaussianLikelihood
 =======================================================
 
 .. currentmodule:: malt.models.likelihood
@@ -30,10 +30,6 @@
       ~HomoschedasticGaussianLikelihood.extra_repr
       ~HomoschedasticGaussianLikelihood.float
       ~HomoschedasticGaussianLikelihood.forward
-      ~HomoschedasticGaussianLikelihood.get_buffer
-      ~HomoschedasticGaussianLikelihood.get_extra_state
-      ~HomoschedasticGaussianLikelihood.get_parameter
-      ~HomoschedasticGaussianLikelihood.get_submodule
       ~HomoschedasticGaussianLikelihood.half
       ~HomoschedasticGaussianLikelihood.load_state_dict
       ~HomoschedasticGaussianLikelihood.loss
@@ -47,17 +43,13 @@
       ~HomoschedasticGaussianLikelihood.register_buffer
       ~HomoschedasticGaussianLikelihood.register_forward_hook
       ~HomoschedasticGaussianLikelihood.register_forward_pre_hook
-      ~HomoschedasticGaussianLikelihood.register_full_backward_hook
       ~HomoschedasticGaussianLikelihood.register_parameter
       ~HomoschedasticGaussianLikelihood.requires_grad_
-      ~HomoschedasticGaussianLikelihood.set_extra_state
       ~HomoschedasticGaussianLikelihood.share_memory
       ~HomoschedasticGaussianLikelihood.state_dict
       ~HomoschedasticGaussianLikelihood.to
-      ~HomoschedasticGaussianLikelihood.to_empty
       ~HomoschedasticGaussianLikelihood.train
       ~HomoschedasticGaussianLikelihood.type
-      ~HomoschedasticGaussianLikelihood.xpu
       ~HomoschedasticGaussianLikelihood.zero_grad
    
    
@@ -70,6 +62,5 @@
    
       ~HomoschedasticGaussianLikelihood.T_destination
       ~HomoschedasticGaussianLikelihood.dump_patches
-      ~HomoschedasticGaussianLikelihood.training
    
    

@@ -34,6 +34,7 @@
       ~Representation.get_parameter
       ~Representation.get_submodule
       ~Representation.half
+      ~Representation.ipu
       ~Representation.load_state_dict
       ~Representation.modules
       ~Representation.named_buffers
@@ -46,6 +47,8 @@
       ~Representation.register_forward_hook
       ~Representation.register_forward_pre_hook
       ~Representation.register_full_backward_hook
+      ~Representation.register_load_state_dict_post_hook
+      ~Representation.register_module
       ~Representation.register_parameter
       ~Representation.requires_grad_
       ~Representation.set_extra_state

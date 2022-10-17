@@ -1,4 +1,4 @@
-﻿malt.models.regressor.Regressor
+malt.models.regressor.Regressor
 ===============================
 
 .. currentmodule:: malt.models.regressor
@@ -34,7 +34,9 @@
       ~Regressor.get_parameter
       ~Regressor.get_submodule
       ~Regressor.half
+      ~Regressor.ipu
       ~Regressor.load_state_dict
+      ~Regressor.loss
       ~Regressor.modules
       ~Regressor.named_buffers
       ~Regressor.named_children
@@ -46,6 +48,8 @@
       ~Regressor.register_forward_hook
       ~Regressor.register_forward_pre_hook
       ~Regressor.register_full_backward_hook
+      ~Regressor.register_load_state_dict_post_hook
+      ~Regressor.register_module
       ~Regressor.register_parameter
       ~Regressor.requires_grad_
       ~Regressor.set_extra_state

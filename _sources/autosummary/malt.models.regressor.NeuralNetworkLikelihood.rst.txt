@@ -1,0 +1,31 @@
+malt.models.regressor.NeuralNetworkLikelihood
+=============================================
+
+.. currentmodule:: malt.models.regressor
+
+.. autoclass:: NeuralNetworkLikelihood
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~NeuralNetworkLikelihood.__init__
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~NeuralNetworkLikelihood.in_features
+   
+   

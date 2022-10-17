@@ -38,6 +38,19 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/supervised.html">Supervised learning demo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/supervised.html#intallation-and-imports">Intallation and imports</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/supervised.html#grab-data">Grab data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/supervised.html#model-definition">Model definition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/supervised.html#train-the-model">Train the model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/supervised.html#characterization">Characterization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/sequential.html">Sequential acquisition demo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/sequential.html#intallation-and-imports">Intallation and imports</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/sequential.html#grab-data">Grab data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/sequential.html#define-model">Define model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/sequential.html#define-agents">Define agents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/sequential.html#define-player">Define player</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/sequential.html#run-the-experiment">Run the experiment</a></li>
 </ul>
 
         </div>
@@ -66,12 +79,14 @@
              
   <h1>Source code for malt.agents.player</h1><div class="highlight"><pre>
 <span></span><span class="kn">import</span> <span class="nn">abc</span>
+<span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Callable</span>
 <span class="kn">from</span> <span class="nn">.agent</span> <span class="kn">import</span> <span class="n">Agent</span>
 <span class="kn">from</span> <span class="nn">.merchant</span> <span class="kn">import</span> <span class="n">Merchant</span>
 <span class="kn">from</span> <span class="nn">.assayer</span> <span class="kn">import</span> <span class="n">Assayer</span>
 <span class="kn">from</span> <span class="nn">malt.models.supervised_model</span> <span class="kn">import</span> <span class="n">SupervisedModel</span>
 <span class="kn">from</span> <span class="nn">malt.data.dataset</span> <span class="kn">import</span> <span class="n">Dataset</span>
+<span class="kn">import</span> <span class="nn">torch</span>
 
 <div class="viewcode-block" id="Player"><a class="viewcode-back" href="../../../autosummary/malt.agents.player.Player.html#malt.agents.player.Player">[docs]</a><span class="k">class</span> <span class="nc">Player</span><span class="p">(</span><span class="n">Agent</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Base class for players.</span>
@@ -111,6 +126,9 @@
     <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
+
+
+
 <div class="viewcode-block" id="ModelBasedPlayer"><a class="viewcode-back" href="../../../autosummary/malt.agents.player.ModelBasedPlayer.html#malt.agents.player.ModelBasedPlayer">[docs]</a><span class="k">class</span> <span class="nc">ModelBasedPlayer</span><span class="p">(</span><span class="n">Player</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Player with model.</span>
 
@@ -132,11 +150,11 @@
 <span class="sd">        Assayer that assays the candidates.</span>
 
 <span class="sd">    portfolio : Dataset</span>
-<span class="sd">        Inititial knowledge about data points.</span>
+<span class="sd">        Initial knowledge about data points.</span>
 
 <span class="sd">    Note</span>
 <span class="sd">    ----</span>
-<span class="sd">    1. Perfolio respects order and could be used to analyze acquisition</span>
+<span class="sd">    1. Portfolio respects order and could be used to analyze acquisition</span>
 <span class="sd">        trajectory.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
@@ -180,11 +198,13 @@
     <span class="k">def</span> <span class="nf">prioritize</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">merchant</span><span class="o">.</span><span class="n">catalogue</span><span class="p">())</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
-        <span class="n">posterior</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">condition</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">merchant</span><span class="o">.</span><span class="n">catalogue</span><span class="p">()</span><span class="o">.</span><span class="n">get_batch_of_all_g</span><span class="p">(),</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+        <span class="n">posterior</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">model</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">merchant</span><span class="o">.</span><span class="n">catalogue</span><span class="p">()</span><span class="o">.</span><span class="n">batch</span><span class="p">(</span><span class="n">by</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;g&#39;</span><span class="p">]),</span>
         <span class="p">)</span>
-        <span class="n">best</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">policy</span><span class="p">(</span><span class="n">posterior</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">())</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">merchant</span><span class="o">.</span><span class="n">catalogue</span><span class="p">()[</span><span class="n">best</span><span class="p">]</span></div>
+        <span class="n">best</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">policy</span><span class="p">(</span><span class="n">posterior</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">merchant</span><span class="o">.</span><span class="n">catalogue</span><span class="p">()[</span><span class="nb">list</span><span class="p">(</span><span class="n">best</span><span class="p">)]</span></div>
+
 
 <div class="viewcode-block" id="SequentialModelBasedPlayer"><a class="viewcode-back" href="../../../autosummary/malt.agents.player.SequentialModelBasedPlayer.html#malt.agents.player.SequentialModelBasedPlayer">[docs]</a><span class="k">class</span> <span class="nc">SequentialModelBasedPlayer</span><span class="p">(</span><span class="n">ModelBasedPlayer</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Model based player with step size equal one.</span>
@@ -193,14 +213,13 @@
 <span class="sd">    --------</span>
 <span class="sd">    &gt;&gt;&gt; import malt</span>
 <span class="sd">    &gt;&gt;&gt; player = SequentialModelBasedPlayer(</span>
-<span class="sd">    ...    model = malt.models.supervised_model.SimpleSupervisedModel(</span>
+<span class="sd">    ...    model = malt.models.supervised_model.SupervisedModel(</span>
 <span class="sd">    ...        representation=malt.models.representation.DGLRepresentation(</span>
 <span class="sd">    ...            out_features=128</span>
 <span class="sd">    ...        ),</span>
 <span class="sd">    ...        regressor=malt.models.regressor.NeuralNetworkRegressor(</span>
-<span class="sd">    ...            in_features=128, out_features=1</span>
+<span class="sd">    ...            in_features=128,</span>
 <span class="sd">    ...        ),</span>
-<span class="sd">    ...        likelihood=malt.models.likelihood.HomoschedasticGaussianLikelihood(),</span>
 <span class="sd">    ...    ),</span>
 <span class="sd">    ...    policy=malt.policy.Greedy(),</span>
 <span class="sd">    ...    trainer=malt.trainer.get_default_trainer(),</span>
@@ -225,10 +244,110 @@
         <span class="n">best</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prioritize</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">best</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">None</span>
-        <span class="n">best</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">([</span><span class="n">best</span><span class="p">])</span>
         <span class="n">best</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">merchandize</span><span class="p">(</span><span class="n">best</span><span class="p">)</span>
         <span class="n">best</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">assay</span><span class="p">(</span><span class="n">best</span><span class="p">)</span>
+        <span class="c1"># import pdb; pdb.set_trace()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">train</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">best</span></div>
+
+
+
+<div class="viewcode-block" id="RandomPlayer"><a class="viewcode-back" href="../../../autosummary/malt.agents.player.RandomPlayer.html#malt.agents.player.RandomPlayer">[docs]</a><span class="k">class</span> <span class="nc">RandomPlayer</span><span class="p">(</span><span class="n">Player</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Player with a random prioritization policy.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    merchant : Merchant</span>
+<span class="sd">        Merchant that merchandizes candidates.</span>
+
+<span class="sd">    assayer : Assayer</span>
+<span class="sd">        Assayer that assays the candidates.</span>
+
+<span class="sd">    portfolio : Dataset</span>
+<span class="sd">        Initial knowledge about data points.</span>
+
+<span class="sd">    Note</span>
+<span class="sd">    ----</span>
+<span class="sd">    1. Portfolio respects order and could be used to analyze acquisition</span>
+<span class="sd">        trajectory.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="RandomPlayer.__init__"><a class="viewcode-back" href="../../../autosummary/malt.agents.player.RandomPlayer.html#malt.agents.player.RandomPlayer.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+            <span class="bp">self</span><span class="p">,</span>
+            <span class="n">merchant</span><span class="p">:</span> <span class="n">Merchant</span><span class="p">,</span>
+            <span class="n">assayer</span><span class="p">:</span> <span class="n">Assayer</span><span class="p">,</span>
+            <span class="n">portfolio</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Dataset</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2666</span><span class="p">,</span>
+        <span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">RandomPlayer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">merchant</span> <span class="o">=</span> <span class="n">merchant</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">assayer</span> <span class="o">=</span> <span class="n">assayer</span>
+        <span class="k">if</span> <span class="n">portfolio</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">portfolio</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">([])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">portfolio</span> <span class="o">=</span> <span class="n">portfolio</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="n">seed</span></div>
+
+    <span class="k">def</span> <span class="nf">merchandize</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">dataset</span><span class="p">:</span> <span class="n">Dataset</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="k">return</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">merchandize</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">assay</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">dataset</span><span class="p">:</span> <span class="n">Dataset</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">assay</span><span class="p">(</span><span class="n">dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">portfolio</span> <span class="o">+=</span> <span class="n">dataset</span>
+        <span class="k">return</span> <span class="n">dataset</span>
+
+    <span class="k">def</span> <span class="nf">prioritize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">acquisition_size</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">catalogue_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">merchant</span><span class="o">.</span><span class="n">catalogue</span><span class="p">())</span>
+        <span class="k">if</span> <span class="n">catalogue_length</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+
+        <span class="n">torch</span><span class="o">.</span><span class="n">manual_seed</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">seed</span><span class="p">)</span>
+        <span class="n">best</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span>
+            <span class="n">size</span> <span class="o">=</span> <span class="p">(</span><span class="n">acquisition_size</span><span class="p">,),</span>
+            <span class="n">high</span> <span class="o">=</span> <span class="n">catalogue_length</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">merchant</span><span class="o">.</span><span class="n">catalogue</span><span class="p">()[</span><span class="nb">list</span><span class="p">(</span><span class="n">best</span><span class="p">)]</span></div>
+
+
+
+
+<div class="viewcode-block" id="SequentialRandomPlayer"><a class="viewcode-back" href="../../../autosummary/malt.agents.player.SequentialRandomPlayer.html#malt.agents.player.SequentialRandomPlayer">[docs]</a><span class="k">class</span> <span class="nc">SequentialRandomPlayer</span><span class="p">(</span><span class="n">RandomPlayer</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Random player with step size equal one.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; import malt</span>
+<span class="sd">    &gt;&gt;&gt; player = SequentialRandomPlayer(</span>
+<span class="sd">    ...    merchant=malt.agents.merchant.DatasetMerchant(</span>
+<span class="sd">    ...        malt.data.collections.linear_alkanes(10),</span>
+<span class="sd">    ...    ),</span>
+<span class="sd">    ...    assayer=malt.agents.assayer.DatasetAssayer(</span>
+<span class="sd">    ...        malt.data.collections.linear_alkanes(10),</span>
+<span class="sd">    ...    )</span>
+<span class="sd">    ... )</span>
+
+<span class="sd">    &gt;&gt;&gt; while True:</span>
+<span class="sd">    ...     if player.step() is None:</span>
+<span class="sd">    ...         break</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="SequentialRandomPlayer.__init__"><a class="viewcode-back" href="../../../autosummary/malt.agents.player.SequentialRandomPlayer.html#malt.agents.player.SequentialRandomPlayer.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">SequentialRandomPlayer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
+        <span class="p">)</span></div>
+
+    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">acquisition_size</span><span class="o">=</span><span class="mi">1</span><span class="p">):</span>
+        <span class="n">best</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prioritize</span><span class="p">(</span>
+            <span class="n">acquisition_size</span><span class="o">=</span><span class="n">acquisition_size</span>
+        <span class="p">)</span>
+        <span class="k">if</span> <span class="n">best</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">best</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">merchandize</span><span class="p">(</span><span class="n">best</span><span class="p">)</span>
+        <span class="n">best</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">assay</span><span class="p">(</span><span class="n">best</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">best</span></div>
 </pre></div>
 
@@ -239,7 +358,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2020, Yuanqing Wang @ choderalab // MSKCC..</p>
+    <p>&#169; Copyright 2022, Yuanqing Wang @ choderalab // MSKCC..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

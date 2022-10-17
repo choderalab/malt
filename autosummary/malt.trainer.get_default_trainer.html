@@ -44,7 +44,6 @@
 <li class="toctree-l2"><a class="reference internal" href="malt.agents.html">malt.agents</a></li>
 <li class="toctree-l2"><a class="reference internal" href="malt.data.html">malt.data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="malt.models.html">malt.models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="malt.point.html">malt.point</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="malt.trainer.html">malt.trainer</a><ul class="current">
 <li class="toctree-l3 current"><a class="current reference internal" href="#">malt.trainer.get_default_trainer</a></li>
 </ul>
@@ -52,6 +51,19 @@
 <li class="toctree-l2"><a class="reference internal" href="malt.utility_functions.html">malt.utility_functions</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../experiments/supervised.html">Supervised learning demo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experiments/supervised.html#intallation-and-imports">Intallation and imports</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experiments/supervised.html#grab-data">Grab data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experiments/supervised.html#model-definition">Model definition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experiments/supervised.html#train-the-model">Train the model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experiments/supervised.html#characterization">Characterization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experiments/sequential.html">Sequential acquisition demo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experiments/sequential.html#intallation-and-imports">Intallation and imports</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experiments/sequential.html#grab-data">Grab data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experiments/sequential.html#define-model">Define model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experiments/sequential.html#define-agents">Define agents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experiments/sequential.html#define-player">Define player</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experiments/sequential.html#run-the-experiment">Run the experiment</a></li>
 </ul>
 
         </div>
@@ -84,8 +96,27 @@
 <h1>malt.trainer.get_default_trainer<a class="headerlink" href="#malt-trainer-get-default-trainer" title="Permalink to this headline"></a></h1>
 <dl class="py function">
 <dt class="sig sig-object py" id="malt.trainer.get_default_trainer">
-<span class="sig-prename descclassname"><span class="pre">malt.trainer.</span></span><span class="sig-name descname"><span class="pre">get_default_trainer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">optimizer</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'Adam'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_rate</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_epochs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/malt/trainer.html#get_default_trainer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#malt.trainer.get_default_trainer" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<span class="sig-prename descclassname"><span class="pre">malt.trainer.</span></span><span class="sig-name descname"><span class="pre">get_default_trainer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">optimizer</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'Adam'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">learning_rate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.001</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_epochs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">batch_size</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reduce_factor</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.5</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">patience</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">without_player</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_learning_rate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1e-06</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/malt/trainer.html#get_default_trainer"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#malt.trainer.get_default_trainer" title="Permalink to this definition"></a></dt>
+<dd><p>Get the default training scheme for models.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>optimizer</strong> (<em>str</em>) – Name of the optimizer. Must be an attribute of <cite>torch.optim</cite></p></li>
+<li><p><strong>learning_rate</strong> (<em>float</em>) – Initial learning rate.</p></li>
+<li><p><strong>n_epochs</strong> (<em>int</em>) – Maximum epochs.</p></li>
+<li><p><strong>batch_size</strong> (<em>int</em>) – Batch size.</p></li>
+<li><p><strong>validation_split</strong> (<em>float</em>) – Proportion of validation set.</p></li>
+<li><p><strong>reduce_factor</strong> (<em>float</em>) – Rate of learning rate reduction.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><strong>Callable</strong></p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Trainer function.</p>
+</dd>
+</dl>
+</dd></dl>
 
 </section>
 
@@ -100,7 +131,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2020, Yuanqing Wang @ choderalab // MSKCC..</p>
+    <p>&#169; Copyright 2022, Yuanqing Wang @ choderalab // MSKCC..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

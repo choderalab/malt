@@ -20,8 +20,10 @@ malt.models.regressor
       :template: custom-class-template.rst
    
       ExactGaussianProcessRegressor
+      HeteroschedasticGaussianLikelihood
+      HomoschedasticGaussianLikelihood
+      NeuralNetworkLikelihood
       NeuralNetworkRegressor
-      RBF
       Regressor
    
    

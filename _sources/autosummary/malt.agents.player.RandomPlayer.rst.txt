@@ -1,0 +1,29 @@
+malt.agents.player.RandomPlayer
+===============================
+
+.. currentmodule:: malt.agents.player
+
+.. autoclass:: RandomPlayer
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~RandomPlayer.__init__
+      ~RandomPlayer.assay
+      ~RandomPlayer.merchandize
+      ~RandomPlayer.prioritize
+      ~RandomPlayer.step
+   
+   
+
+   
+   
+   

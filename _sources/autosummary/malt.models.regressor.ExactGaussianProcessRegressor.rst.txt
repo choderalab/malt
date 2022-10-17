@@ -1,4 +1,4 @@
-﻿malt.models.regressor.ExactGaussianProcessRegressor
+malt.models.regressor.ExactGaussianProcessRegressor
 ===================================================
 
 .. currentmodule:: malt.models.regressor
@@ -22,7 +22,6 @@
       ~ExactGaussianProcessRegressor.bfloat16
       ~ExactGaussianProcessRegressor.buffers
       ~ExactGaussianProcessRegressor.children
-      ~ExactGaussianProcessRegressor.condition
       ~ExactGaussianProcessRegressor.cpu
       ~ExactGaussianProcessRegressor.cuda
       ~ExactGaussianProcessRegressor.double
@@ -35,6 +34,7 @@
       ~ExactGaussianProcessRegressor.get_parameter
       ~ExactGaussianProcessRegressor.get_submodule
       ~ExactGaussianProcessRegressor.half
+      ~ExactGaussianProcessRegressor.ipu
       ~ExactGaussianProcessRegressor.load_state_dict
       ~ExactGaussianProcessRegressor.loss
       ~ExactGaussianProcessRegressor.modules
@@ -48,6 +48,8 @@
       ~ExactGaussianProcessRegressor.register_forward_hook
       ~ExactGaussianProcessRegressor.register_forward_pre_hook
       ~ExactGaussianProcessRegressor.register_full_backward_hook
+      ~ExactGaussianProcessRegressor.register_load_state_dict_post_hook
+      ~ExactGaussianProcessRegressor.register_module
       ~ExactGaussianProcessRegressor.register_parameter
       ~ExactGaussianProcessRegressor.requires_grad_
       ~ExactGaussianProcessRegressor.set_extra_state
@@ -70,7 +72,7 @@
    
       ~ExactGaussianProcessRegressor.T_destination
       ~ExactGaussianProcessRegressor.dump_patches
-      ~ExactGaussianProcessRegressor.epsilon
+      ~ExactGaussianProcessRegressor.initialized
       ~ExactGaussianProcessRegressor.training
    
    

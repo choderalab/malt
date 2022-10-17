@@ -51,11 +51,23 @@
 </ul>
 </li>
 <li class="toctree-l2"><a class="reference internal" href="malt.models.html">malt.models</a></li>
-<li class="toctree-l2"><a class="reference internal" href="malt.point.html">malt.point</a></li>
 <li class="toctree-l2"><a class="reference internal" href="malt.trainer.html">malt.trainer</a></li>
 <li class="toctree-l2"><a class="reference internal" href="malt.utility_functions.html">malt.utility_functions</a></li>
 </ul>
 </li>
+<li class="toctree-l1"><a class="reference internal" href="../experiments/supervised.html">Supervised learning demo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experiments/supervised.html#intallation-and-imports">Intallation and imports</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experiments/supervised.html#grab-data">Grab data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experiments/supervised.html#model-definition">Model definition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experiments/supervised.html#train-the-model">Train the model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experiments/supervised.html#characterization">Characterization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experiments/sequential.html">Sequential acquisition demo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experiments/sequential.html#intallation-and-imports">Intallation and imports</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experiments/sequential.html#grab-data">Grab data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experiments/sequential.html#define-model">Define model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experiments/sequential.html#define-agents">Define agents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experiments/sequential.html#define-player">Define player</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../experiments/sequential.html#run-the-experiment">Run the experiment</a></li>
 </ul>
 
         </div>
@@ -89,19 +101,19 @@
 <h1>malt.data.dataset.Dataset<a class="headerlink" href="#malt-data-dataset-dataset" title="Permalink to this headline"></a></h1>
 <dl class="py class">
 <dt class="sig sig-object py" id="malt.data.dataset.Dataset">
-<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">malt.data.dataset.</span></span><span class="sig-name descname"><span class="pre">Dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/malt/data/dataset.html#Dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#malt.data.dataset.Dataset" title="Permalink to this definition"></a></dt>
-<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Generic</span></code>[<code class="xref py py-obj docutils literal notranslate"><span class="pre">torch.utils.data.dataset.T_co</span></code>]</p>
-<p>A collection of Points with functionalities to be compatible with
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">malt.data.dataset.</span></span><span class="sig-name descname"><span class="pre">Dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">molecules</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/malt/data/dataset.html#Dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#malt.data.dataset.Dataset" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">torch.utils.data.dataset.Dataset</span></code></p>
+<p>A collection of Molecules with functionalities to be compatible with
 training and optimization.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>points</strong> (<em>List[Point]</em>) – A list of points.</p>
+<dd class="field-odd"><p><strong>molecules</strong> (<em>List[malt.Molecule]</em>) – A list of Molecules.</p>
 </dd>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="malt.data.dataset.Dataset.featurize">
-<span class="sig-name descname"><span class="pre">featurize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#malt.data.dataset.Dataset.featurize" title="Permalink to this definition"></a></dt>
-<dd><p>Featurize all points in the dataset.</p>
+<span class="sig-name descname"><span class="pre">featurize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">molecules</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#malt.data.dataset.Dataset.featurize" title="Permalink to this definition"></a></dt>
+<dd><p>Featurize all molecules in the dataset.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -112,7 +124,7 @@ training and optimization.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="malt.data.dataset.Dataset.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">points</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/malt/data/dataset.html#Dataset.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#malt.data.dataset.Dataset.__init__" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">molecules</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../_modules/malt/data/dataset.html#Dataset.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#malt.data.dataset.Dataset.__init__" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <p class="rubric">Methods</p>
@@ -122,40 +134,34 @@ training and optimization.</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="#malt.data.dataset.Dataset.__init__" title="malt.data.dataset.Dataset.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>(points)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#malt.data.dataset.Dataset.__init__" title="malt.data.dataset.Dataset.__init__"><code class="xref py py-obj docutils literal notranslate"><span class="pre">__init__</span></code></a>([molecules])</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#malt.data.dataset.Dataset.append" title="malt.data.dataset.Dataset.append"><code class="xref py py-obj docutils literal notranslate"><span class="pre">append</span></code></a>(point)</p></td>
-<td><p>Append a point to the dataset.</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#malt.data.dataset.Dataset.append" title="malt.data.dataset.Dataset.append"><code class="xref py py-obj docutils literal notranslate"><span class="pre">append</span></code></a>(molecule)</p></td>
+<td><p>Append a molecule to the dataset.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply</span></code>(function)</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#malt.data.dataset.Dataset.apply" title="malt.data.dataset.Dataset.apply"><code class="xref py py-obj docutils literal notranslate"><span class="pre">apply</span></code></a>(function)</p></td>
+<td><p>Apply a function to all molecules in the dataset.</p></td>
+</tr>
+<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">batch</span></code>(*args, **kwargs)</p></td>
 <td><p></p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">batch_of_g</span></code>(points)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">batch_of_g_and_y</span></code>(points)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#malt.data.dataset.Dataset.clone" title="malt.data.dataset.Dataset.clone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clone</span></code></a>()</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#malt.data.dataset.Dataset.clone" title="malt.data.dataset.Dataset.clone"><code class="xref py py-obj docutils literal notranslate"><span class="pre">clone</span></code></a>()</p></td>
 <td><p>Return a copy of self.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">erase_annotation</span></code>()</p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#malt.data.dataset.Dataset.erase_annotation" title="malt.data.dataset.Dataset.erase_annotation"><code class="xref py py-obj docutils literal notranslate"><span class="pre">erase_annotation</span></code></a>()</p></td>
+<td><p>Erase the metadata.</p></td>
 </tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#malt.data.dataset.Dataset.featurize_all" title="malt.data.dataset.Dataset.featurize_all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">featurize_all</span></code></a>()</p></td>
-<td><p>Featurize all points in dataset.</p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#malt.data.dataset.Dataset.featurize_all" title="malt.data.dataset.Dataset.featurize_all"><code class="xref py py-obj docutils literal notranslate"><span class="pre">featurize_all</span></code></a>()</p></td>
+<td><p>Featurize all molecules in dataset.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">get_batch_of_all_g</span></code>()</p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#malt.data.dataset.Dataset.shuffle" title="malt.data.dataset.Dataset.shuffle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">shuffle</span></code></a>([seed])</p></td>
+<td><p>Shuffle the dataset and return it.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_datapipe_as_function</span></code>(function_name, ...)</p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#malt.data.dataset.Dataset.split" title="malt.data.dataset.Dataset.split"><code class="xref py py-obj docutils literal notranslate"><span class="pre">split</span></code></a>(partition)</p></td>
+<td><p>Split the dataset according to some partition.</p></td>
 </tr>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">register_function</span></code>(function_name, function)</p></td>
-<td><p></p></td>
-</tr>
-<tr class="row-even"><td><p><a class="reference internal" href="#id0" title="malt.data.dataset.Dataset.view"><code class="xref py py-obj docutils literal notranslate"><span class="pre">view</span></code></a>([collate_fn])</p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#id0" title="malt.data.dataset.Dataset.view"><code class="xref py py-obj docutils literal notranslate"><span class="pre">view</span></code></a>([collate_fn, by])</p></td>
 <td><p>Provide a data loader from portfolio.</p></td>
 </tr>
 </tbody>
@@ -167,23 +173,54 @@ training and optimization.</p>
 <col style="width: 90%" />
 </colgroup>
 <tbody>
-<tr class="row-odd"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">functions</span></code></p></td>
-<td><p></p></td>
+<tr class="row-odd"><td><p><a class="reference internal" href="#malt.data.dataset.Dataset.lookup" title="malt.data.dataset.Dataset.lookup"><code class="xref py py-obj docutils literal notranslate"><span class="pre">lookup</span></code></a></p></td>
+<td><p>Returns the mapping between the SMILES and the molecule.</p></td>
 </tr>
-<tr class="row-even"><td><p><code class="xref py py-obj docutils literal notranslate"><span class="pre">lookup</span></code></p></td>
-<td><p></p></td>
+<tr class="row-even"><td><p><a class="reference internal" href="#malt.data.dataset.Dataset.smiles" title="malt.data.dataset.Dataset.smiles"><code class="xref py py-obj docutils literal notranslate"><span class="pre">smiles</span></code></a></p></td>
+<td><p>Return the list of SMILE strings in the datset.</p></td>
 </tr>
 </tbody>
 </table>
 <dl class="py method">
 <dt class="sig sig-object py" id="malt.data.dataset.Dataset.append">
-<span class="sig-name descname"><span class="pre">append</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">point</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/malt/data/dataset.html#Dataset.append"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#malt.data.dataset.Dataset.append" title="Permalink to this definition"></a></dt>
-<dd><p>Append a point to the dataset.</p>
+<span class="sig-name descname"><span class="pre">append</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">molecule</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/malt/data/dataset.html#Dataset.append"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#malt.data.dataset.Dataset.append" title="Permalink to this definition"></a></dt>
+<dd><p>Append a molecule to the dataset.</p>
+<p>Alias of append for molecules.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<ul class="simple">
+<li><p>This append in-place.</p></li>
+</ul>
+</div>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>point</strong> (<em>Point</em>) – The data point to be appended.</p>
+<dd class="field-odd"><p><strong>molecule</strong> (<em>molecule</em>) – The data molecule to be appended.</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="malt.data.dataset.Dataset.apply">
+<span class="sig-name descname"><span class="pre">apply</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">function</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/malt/data/dataset.html#Dataset.apply"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#malt.data.dataset.Dataset.apply" title="Permalink to this definition"></a></dt>
+<dd><p>Apply a function to all molecules in the dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>function</strong> (<em>Callable</em>) – The function to be applied to all molecules in this dataset
+in place.</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">molecule</span> <span class="o">=</span> <span class="n">Molecule</span><span class="p">(</span><span class="s2">&quot;CC&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">([</span><span class="n">molecule</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="kn">from</span> <span class="nn">..molecule</span> <span class="kn">import</span> <span class="n">Molecule</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fn</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">molecule</span><span class="p">:</span> <span class="n">Molecule</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="n">smiles</span><span class="o">=</span><span class="n">molecule</span><span class="o">.</span><span class="n">smiles</span><span class="p">,</span> <span class="n">metadata</span><span class="o">=</span><span class="p">{</span><span class="s2">&quot;name&quot;</span><span class="p">:</span> <span class="s2">&quot;john&quot;</span><span class="p">},</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="s2">&quot;name&quot;</span><span class="p">]</span>
+<span class="go">&#39;john&#39;</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
@@ -193,18 +230,70 @@ training and optimization.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="malt.data.dataset.Dataset.erase_annotation">
+<span class="sig-name descname"><span class="pre">erase_annotation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/malt/data/dataset.html#Dataset.erase_annotation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#malt.data.dataset.Dataset.erase_annotation" title="Permalink to this definition"></a></dt>
+<dd><p>Erase the metadata.</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="malt.data.dataset.Dataset.featurize_all">
 <span class="sig-name descname"><span class="pre">featurize_all</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/malt/data/dataset.html#Dataset.featurize_all"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#malt.data.dataset.Dataset.featurize_all" title="Permalink to this definition"></a></dt>
-<dd><p>Featurize all points in dataset.</p>
+<dd><p>Featurize all molecules in dataset.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="malt.data.dataset.Dataset.lookup">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">lookup</span></span><a class="headerlink" href="#malt.data.dataset.Dataset.lookup" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the mapping between the SMILES and the molecule.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="malt.data.dataset.Dataset.shuffle">
+<span class="sig-name descname"><span class="pre">shuffle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/malt/data/dataset.html#Dataset.shuffle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#malt.data.dataset.Dataset.shuffle" title="Permalink to this definition"></a></dt>
+<dd><p>Shuffle the dataset and return it.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="malt.data.dataset.Dataset.smiles">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">smiles</span></span><a class="headerlink" href="#malt.data.dataset.Dataset.smiles" title="Permalink to this definition"></a></dt>
+<dd><p>Return the list of SMILE strings in the datset.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="malt.data.dataset.Dataset.split">
+<span class="sig-name descname"><span class="pre">split</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">partition</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/malt/data/dataset.html#Dataset.split"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#malt.data.dataset.Dataset.split" title="Permalink to this definition"></a></dt>
+<dd><p>Split the dataset according to some partition.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>partition</strong> (<em>Sequence[Optional[int, float]]</em>) – Splitting partition.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>List of datasets split according to the partition.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List[<a class="reference internal" href="#malt.data.dataset.Dataset" title="malt.data.dataset.Dataset">Dataset</a>]</p>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">Dataset</span><span class="p">([</span><span class="n">Molecule</span><span class="p">(</span><span class="s2">&quot;CC&quot;</span><span class="p">),</span> <span class="n">Molecule</span><span class="p">(</span><span class="s2">&quot;C&quot;</span><span class="p">)])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset0</span><span class="p">,</span> <span class="n">dataset1</span> <span class="o">=</span> <span class="n">dataset</span><span class="o">.</span><span class="n">split</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset0</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">smiles</span>
+<span class="go">&#39;CC&#39;</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="id0">
-<span class="sig-name descname"><span class="pre">view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collate_fn</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">callable</span><span class="p"><span class="pre">,</span> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'batch_of_g_and_y'</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/malt/data/dataset.html#Dataset.view"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id0" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">view</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">collate_fn</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Callable</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">by</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">Iterable</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">['g',</span> <span class="pre">'y']</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span><span class="n"><span class="pre">args</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/malt/data/dataset.html#Dataset.view"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#id0" title="Permalink to this definition"></a></dt>
 <dd><p>Provide a data loader from portfolio.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>collate_fn</strong> (<em>None or callable</em>) – The function to gather data points.</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>collate_fn</strong> (<em>Optional[Callable]</em>) – The function to gather data molecules.</p></li>
+<li><p><strong>assay</strong> (<em>Union[None, str]</em>) – Batch data from molecules using key provided to filter metadata.</p></li>
+<li><p><strong>by</strong> (<em>Union[Iterable, str]</em>)</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>Resulting data loader.</p>
@@ -230,7 +319,7 @@ training and optimization.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2020, Yuanqing Wang @ choderalab // MSKCC..</p>
+    <p>&#169; Copyright 2022, Yuanqing Wang @ choderalab // MSKCC..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

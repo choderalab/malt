@@ -1,4 +1,4 @@
-﻿malt.models.likelihood.Likelihood
+malt.models.likelihood.Likelihood
 =================================
 
 .. currentmodule:: malt.models.likelihood
@@ -30,10 +30,6 @@
       ~Likelihood.extra_repr
       ~Likelihood.float
       ~Likelihood.forward
-      ~Likelihood.get_buffer
-      ~Likelihood.get_extra_state
-      ~Likelihood.get_parameter
-      ~Likelihood.get_submodule
       ~Likelihood.half
       ~Likelihood.load_state_dict
       ~Likelihood.loss
@@ -47,17 +43,13 @@
       ~Likelihood.register_buffer
       ~Likelihood.register_forward_hook
       ~Likelihood.register_forward_pre_hook
-      ~Likelihood.register_full_backward_hook
       ~Likelihood.register_parameter
       ~Likelihood.requires_grad_
-      ~Likelihood.set_extra_state
       ~Likelihood.share_memory
       ~Likelihood.state_dict
       ~Likelihood.to
-      ~Likelihood.to_empty
       ~Likelihood.train
       ~Likelihood.type
-      ~Likelihood.xpu
       ~Likelihood.zero_grad
    
    
@@ -70,6 +62,5 @@
    
       ~Likelihood.T_destination
       ~Likelihood.dump_patches
-      ~Likelihood.training
    
    

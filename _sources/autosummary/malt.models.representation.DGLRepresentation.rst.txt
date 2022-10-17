@@ -34,6 +34,7 @@
       ~DGLRepresentation.get_parameter
       ~DGLRepresentation.get_submodule
       ~DGLRepresentation.half
+      ~DGLRepresentation.ipu
       ~DGLRepresentation.load_state_dict
       ~DGLRepresentation.modules
       ~DGLRepresentation.named_buffers
@@ -46,6 +47,8 @@
       ~DGLRepresentation.register_forward_hook
       ~DGLRepresentation.register_forward_pre_hook
       ~DGLRepresentation.register_full_backward_hook
+      ~DGLRepresentation.register_load_state_dict_post_hook
+      ~DGLRepresentation.register_module
       ~DGLRepresentation.register_parameter
       ~DGLRepresentation.requires_grad_
       ~DGLRepresentation.set_extra_state

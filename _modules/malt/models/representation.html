@@ -38,6 +38,19 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/supervised.html">Supervised learning demo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/supervised.html#intallation-and-imports">Intallation and imports</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/supervised.html#grab-data">Grab data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/supervised.html#model-definition">Model definition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/supervised.html#train-the-model">Train the model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/supervised.html#characterization">Characterization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/sequential.html">Sequential acquisition demo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/sequential.html#intallation-and-imports">Intallation and imports</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/sequential.html#grab-data">Grab data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/sequential.html#define-model">Define model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/sequential.html#define-agents">Define agents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/sequential.html#define-player">Define player</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/sequential.html#run-the-experiment">Run the experiment</a></li>
 </ul>
 
         </div>
@@ -69,6 +82,7 @@
 <span class="c1"># IMPORTS</span>
 <span class="c1"># =============================================================================</span>
 <span class="kn">import</span> <span class="nn">abc</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Optional</span>
 <span class="kn">import</span> <span class="nn">torch</span>
 <span class="kn">import</span> <span class="nn">dgl</span>
 <span class="kn">import</span> <span class="nn">functools</span>
@@ -112,31 +126,38 @@
 <div class="viewcode-block" id="DGLRepresentation.__init__"><a class="viewcode-back" href="../../../autosummary/malt.models.representation.DGLRepresentation.html#malt.models.representation.DGLRepresentation.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">layer</span><span class="p">:</span> <span class="nb">type</span> <span class="o">=</span> <span class="n">functools</span><span class="o">.</span><span class="n">partial</span><span class="p">(</span><span class="n">GraphConv</span><span class="p">,</span> <span class="n">allow_zero_in_degree</span><span class="o">=</span><span class="kc">True</span><span class="p">),</span>
-        <span class="n">in_features</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">74</span><span class="p">,</span>
-        <span class="n">hidden_features</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span>
-        <span class="n">out_features</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span>
+        <span class="n">in_features</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">74</span><span class="p">,</span> <span class="c1"># TODO(yuanqing-wang): make this less awkward?</span>
+        <span class="n">hidden_features</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+        <span class="n">out_features</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span>
         <span class="n">depth</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
-        <span class="n">activation</span><span class="p">:</span> <span class="n">callable</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+        <span class="n">activation</span><span class="p">:</span> <span class="n">callable</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">SiLU</span><span class="p">(),</span>
         <span class="n">global_pool</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;sum&quot;</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">DGLRepresentation</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">out_features</span><span class="o">=</span><span class="n">out_features</span><span class="p">)</span>
 
-        <span class="n">_in_features</span> <span class="o">=</span> <span class="n">in_features</span>  <span class="c1"># first layer is input</span>
+        <span class="k">if</span> <span class="n">hidden_features</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">hidden_features</span> <span class="o">=</span> <span class="n">out_features</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">embedding_in</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">in_features</span><span class="p">,</span> <span class="n">hidden_features</span><span class="p">),</span>
+            <span class="n">activation</span><span class="p">,</span>
+        <span class="p">)</span>
+
         <span class="c1"># construct model</span>
         <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">depth</span><span class="p">):</span>
             <span class="nb">setattr</span><span class="p">(</span>
                 <span class="bp">self</span><span class="p">,</span>
                 <span class="s2">&quot;gn</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">idx</span><span class="p">,</span>
-                <span class="n">layer</span><span class="p">(</span><span class="n">_in_features</span><span class="p">,</span> <span class="n">hidden_features</span><span class="p">),</span>
+                <span class="n">layer</span><span class="p">(</span><span class="n">hidden_features</span><span class="p">,</span> <span class="n">hidden_features</span><span class="p">),</span>
             <span class="p">)</span>
-            <span class="n">_in_features</span> <span class="o">=</span> <span class="n">hidden_features</span>  <span class="c1"># hidden feature as input</span>
+
+        <span class="c1"># self.embedding_out = torch.nn.Sequential(</span>
+        <span class="c1">#     torch.nn.Linear(hidden_features, hidden_features),</span>
+        <span class="c1">#     activation,</span>
+        <span class="c1"># )</span>
 
         <span class="c1"># output</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">ff</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
-            <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden_features</span><span class="p">,</span> <span class="n">hidden_features</span><span class="p">),</span>
-            <span class="n">activation</span><span class="p">,</span>
-            <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden_features</span><span class="p">,</span> <span class="n">out_features</span><span class="p">),</span>
-        <span class="p">)</span>
+        <span class="c1"># self.ff = torch.nn.Linear(hidden_features, out_features)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">depth</span> <span class="o">=</span> <span class="n">depth</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">global_pool</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">dgl</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">_nodes&quot;</span> <span class="o">%</span> <span class="n">global_pool</span><span class="p">)</span>
@@ -150,22 +171,38 @@
 <span class="sd">        g : dgl.DGLGraph</span>
 <span class="sd">            Input graph.</span>
 
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        torch.Tensor</span>
+<span class="sd">            The result</span>
+
+<span class="sd">        Examples</span>
+<span class="sd">        --------</span>
+<span class="sd">        &gt;&gt;&gt; import malt</span>
+<span class="sd">        &gt;&gt;&gt; molecule = malt.Molecule(&quot;C&quot;)</span>
+<span class="sd">        &gt;&gt;&gt; representation = DGLRepresentation()</span>
+<span class="sd">        &gt;&gt;&gt; h = representation(molecule.g)</span>
+<span class="sd">        &gt;&gt;&gt; assert h.shape == (1, 1)</span>
+
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># make local copy</span>
         <span class="n">g</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">local_var</span><span class="p">()</span>
         <span class="n">h</span> <span class="o">=</span> <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="n">field</span><span class="p">]</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedding_in</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
 
         <span class="c1"># loop through the depth</span>
         <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">depth</span><span class="p">):</span>
             <span class="n">h</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;gn</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">idx</span><span class="p">)(</span><span class="n">g</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
             <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+
+        <span class="c1"># h = self.embedding_out(h)</span>
         <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="n">field</span><span class="p">]</span> <span class="o">=</span> <span class="n">h</span>
 
         <span class="c1"># global pool</span>
         <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">global_pool</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">field</span><span class="p">)</span>
 
         <span class="c1"># final feedforward</span>
-        <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ff</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
+        <span class="c1"># h = self.ff(h)</span>
 
         <span class="k">return</span> <span class="n">h</span></div></div>
 </pre></div>
@@ -177,7 +214,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2020, Yuanqing Wang @ choderalab // MSKCC..</p>
+    <p>&#169; Copyright 2022, Yuanqing Wang @ choderalab // MSKCC..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

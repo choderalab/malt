@@ -19,8 +19,6 @@ malt.models.supervised\_model
       :toctree:
       :template: custom-class-template.rst
    
-      GaussianProcessSupervisedModel
-      SimpleSupervisedModel
       SupervisedModel
    
    

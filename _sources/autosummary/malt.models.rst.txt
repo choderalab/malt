@@ -29,7 +29,6 @@
    :recursive:
 
 
-   malt.models.likelihood
    malt.models.regressor
    malt.models.representation
    malt.models.supervised_model

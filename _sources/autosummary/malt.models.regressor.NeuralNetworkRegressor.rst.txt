@@ -1,4 +1,4 @@
-﻿malt.models.regressor.NeuralNetworkRegressor
+malt.models.regressor.NeuralNetworkRegressor
 ============================================
 
 .. currentmodule:: malt.models.regressor
@@ -34,7 +34,9 @@
       ~NeuralNetworkRegressor.get_parameter
       ~NeuralNetworkRegressor.get_submodule
       ~NeuralNetworkRegressor.half
+      ~NeuralNetworkRegressor.ipu
       ~NeuralNetworkRegressor.load_state_dict
+      ~NeuralNetworkRegressor.loss
       ~NeuralNetworkRegressor.modules
       ~NeuralNetworkRegressor.named_buffers
       ~NeuralNetworkRegressor.named_children
@@ -46,6 +48,8 @@
       ~NeuralNetworkRegressor.register_forward_hook
       ~NeuralNetworkRegressor.register_forward_pre_hook
       ~NeuralNetworkRegressor.register_full_backward_hook
+      ~NeuralNetworkRegressor.register_load_state_dict_post_hook
+      ~NeuralNetworkRegressor.register_module
       ~NeuralNetworkRegressor.register_parameter
       ~NeuralNetworkRegressor.requires_grad_
       ~NeuralNetworkRegressor.set_extra_state

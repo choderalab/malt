@@ -38,6 +38,19 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../getting_started.html">Getting Started</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../api.html">API Documentation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/supervised.html">Supervised learning demo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/supervised.html#intallation-and-imports">Intallation and imports</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/supervised.html#grab-data">Grab data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/supervised.html#model-definition">Model definition</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/supervised.html#train-the-model">Train the model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/supervised.html#characterization">Characterization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/sequential.html">Sequential acquisition demo</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/sequential.html#intallation-and-imports">Intallation and imports</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/sequential.html#grab-data">Grab data</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/sequential.html#define-model">Define model</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/sequential.html#define-agents">Define agents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/sequential.html#define-player">Define player</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../experiments/sequential.html#run-the-experiment">Run the experiment</a></li>
 </ul>
 
         </div>
@@ -70,93 +83,168 @@
 <span class="c1"># =============================================================================</span>
 <span class="kn">import</span> <span class="nn">abc</span>
 <span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">import</span> <span class="nn">gpytorch</span>
+<span class="n">gpytorch</span><span class="o">.</span><span class="n">settings</span><span class="o">.</span><span class="n">debug</span><span class="o">.</span><span class="n">_state</span> <span class="o">=</span> <span class="kc">False</span>
+
 
 <span class="c1"># =============================================================================</span>
 <span class="c1"># BASE CLASSES</span>
 <span class="c1"># =============================================================================</span>
 <div class="viewcode-block" id="Regressor"><a class="viewcode-back" href="../../../autosummary/malt.models.regressor.Regressor.html#malt.models.regressor.Regressor">[docs]</a><span class="k">class</span> <span class="nc">Regressor</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">,</span> <span class="n">abc</span><span class="o">.</span><span class="n">ABC</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot;Base class for a regressor.&quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot;Base class for a regressor.</span>
 
-<div class="viewcode-block" id="Regressor.__init__"><a class="viewcode-back" href="../../../autosummary/malt.models.regressor.Regressor.html#malt.models.regressor.Regressor.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_features</span><span class="p">,</span> <span class="n">out_features</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">Regressor</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">in_features</span> <span class="o">=</span> <span class="n">in_features</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">out_features</span> <span class="o">=</span> <span class="n">out_features</span></div></div>
-
-
-<span class="c1"># =============================================================================</span>
-<span class="c1"># KERNELS</span>
-<span class="c1"># =============================================================================</span>
-<div class="viewcode-block" id="RBF"><a class="viewcode-back" href="../../../autosummary/malt.models.regressor.RBF.html#malt.models.regressor.RBF">[docs]</a><span class="k">class</span> <span class="nc">RBF</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span><span class="p">):</span>
-    <span class="sa">r</span><span class="sd">&quot;&quot;&quot;A Gaussian Process Kernel that hosts parameters.</span>
-
-<span class="sd">    Note</span>
-<span class="sd">    ----</span>
-<span class="sd">    l could be either of shape 1 or hidden dim</span>
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    in_features : int</span>
+<span class="sd">        Input features.</span>
 
 <span class="sd">    &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="RBF.__init__"><a class="viewcode-back" href="../../../autosummary/malt.models.regressor.RBF.html#malt.models.regressor.RBF.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_features</span><span class="p">,</span> <span class="n">scale</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">variance</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span> <span class="n">ard</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+<div class="viewcode-block" id="Regressor.__init__"><a class="viewcode-back" href="../../../autosummary/malt.models.regressor.Regressor.html#malt.models.regressor.Regressor.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_features</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">Regressor</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">in_features</span> <span class="o">=</span> <span class="n">in_features</span></div>
 
-        <span class="nb">super</span><span class="p">(</span><span class="n">RBF</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+<div class="viewcode-block" id="Regressor.forward"><a class="viewcode-back" href="../../../autosummary/malt.models.regressor.Regressor.html#malt.models.regressor.Regressor.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">representation</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Forward function.</span>
 
-        <span class="k">if</span> <span class="n">ard</span> <span class="ow">is</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">scale</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">in_features</span><span class="p">))</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        representation : torch.Tensor</span>
+<span class="sd">            Representation of the graph(s).</span>
 
-        <span class="k">else</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">scale</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">scale</span><span class="p">))</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        torch.distributions.Distribution</span>
+<span class="sd">            Resutling distribution.</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">variance</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">variance</span><span class="p">))</span></div>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
-<div class="viewcode-block" id="RBF.distance"><a class="viewcode-back" href="../../../autosummary/malt.models.regressor.RBF.html#malt.models.regressor.RBF.distance">[docs]</a>    <span class="k">def</span> <span class="nf">distance</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">x_</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Distance between data points. &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">norm</span><span class="p">(</span><span class="n">x</span><span class="p">[:,</span> <span class="kc">None</span><span class="p">,</span> <span class="p">:]</span> <span class="o">-</span> <span class="n">x_</span><span class="p">[</span><span class="kc">None</span><span class="p">,</span> <span class="p">:,</span> <span class="p">:],</span> <span class="n">p</span><span class="o">=</span><span class="mi">2</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span></div>
+<div class="viewcode-block" id="Regressor.loss"><a class="viewcode-back" href="../../../autosummary/malt.models.regressor.Regressor.html#malt.models.regressor.Regressor.loss">[docs]</a>    <span class="k">def</span> <span class="nf">loss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">representation</span><span class="p">,</span> <span class="n">observation</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Compute the loss.</span>
 
-<div class="viewcode-block" id="RBF.forward"><a class="viewcode-back" href="../../../autosummary/malt.models.regressor.RBF.html#malt.models.regressor.RBF.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">x_</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Forward pass. &quot;&quot;&quot;</span>
-        <span class="c1"># replicate x if there&#39;s no x_</span>
-        <span class="k">if</span> <span class="n">x_</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">x_</span> <span class="o">=</span> <span class="n">x</span>
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        representation : torch.Tensor</span>
+<span class="sd">            Representation of the graph(s).</span>
 
-        <span class="c1"># for now, only allow two dimension</span>
-        <span class="k">assert</span> <span class="n">x</span><span class="o">.</span><span class="n">dim</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span>
-        <span class="k">assert</span> <span class="n">x_</span><span class="o">.</span><span class="n">dim</span><span class="p">()</span> <span class="o">==</span> <span class="mi">2</span>
+<span class="sd">        observation : torch.Tensor</span>
+<span class="sd">            Observation associated with the graph.</span>
 
-        <span class="n">x</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scale</span><span class="p">)</span>
-        <span class="n">x_</span> <span class="o">=</span> <span class="n">x_</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">scale</span><span class="p">)</span>
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        torch.Tensor (shape=())</span>
 
-        <span class="c1"># (batch_size, batch_size)</span>
-        <span class="n">distance</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">distance</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x_</span><span class="p">)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">posterior</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">representation</span><span class="p">)</span>
+        <span class="n">nll</span> <span class="o">=</span> <span class="o">-</span><span class="n">posterior</span><span class="o">.</span><span class="n">log_prob</span><span class="p">(</span><span class="n">observation</span><span class="o">.</span><span class="n">unsqueeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">nll</span></div></div>
 
-        <span class="c1"># convariant matrix</span>
-        <span class="c1"># (batch_size, batch_size)</span>
-        <span class="n">k</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">variance</span><span class="p">)</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="n">distance</span><span class="p">)</span>
+<div class="viewcode-block" id="NeuralNetworkLikelihood"><a class="viewcode-back" href="../../../autosummary/malt.models.regressor.NeuralNetworkLikelihood.html#malt.models.regressor.NeuralNetworkLikelihood">[docs]</a><span class="k">class</span> <span class="nc">NeuralNetworkLikelihood</span><span class="p">(</span><span class="n">abc</span><span class="o">.</span><span class="n">ABC</span><span class="p">):</span>
+    <span class="nd">@property</span>
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="nf">in_features</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span>
 
-        <span class="k">return</span> <span class="n">k</span></div></div>
-
+    <span class="nd">@abc</span><span class="o">.</span><span class="n">abstractmethod</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
 <span class="c1"># =============================================================================</span>
 <span class="c1"># MODULE CLASSES</span>
 <span class="c1"># =============================================================================</span>
+<div class="viewcode-block" id="HeteroschedasticGaussianLikelihood"><a class="viewcode-back" href="../../../autosummary/malt.models.regressor.HeteroschedasticGaussianLikelihood.html#malt.models.regressor.HeteroschedasticGaussianLikelihood">[docs]</a><span class="k">class</span> <span class="nc">HeteroschedasticGaussianLikelihood</span><span class="p">(</span><span class="n">NeuralNetworkLikelihood</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Models a heteroschedastic Gaussian likelihood to be used with</span>
+<span class="sd">    neural network regressors. (Admits unconstrained parameters.)</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    in_features = 2</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mu : torch.Tensor</span>
+
+<span class="sd">    log_sigma : torch.Tensor</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; likelihood = HeteroschedasticGaussianLikelihood()</span>
+<span class="sd">    &gt;&gt;&gt; posterior = likelihood(torch.tensor(0.0), torch.tensor(0.0))</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">in_features</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mu</span><span class="p">,</span> <span class="n">log_sigma</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">distributions</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">log_sigma</span><span class="o">.</span><span class="n">exp</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="HomoschedasticGaussianLikelihood"><a class="viewcode-back" href="../../../autosummary/malt.models.regressor.HomoschedasticGaussianLikelihood.html#malt.models.regressor.HomoschedasticGaussianLikelihood">[docs]</a><span class="k">class</span> <span class="nc">HomoschedasticGaussianLikelihood</span><span class="p">(</span><span class="n">NeuralNetworkLikelihood</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Models a homoschedastic Gaussian likelihood to be used with</span>
+<span class="sd">    neural network regressors. (Admits unconstrained parameters.)</span>
+
+<span class="sd">    Attributes</span>
+<span class="sd">    ----------</span>
+<span class="sd">    in_features = 2</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    mu : torch.Tensor</span>
+
+<span class="sd">    log_sigma : torch.Tensor</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; likelihood = HomoschedasticGaussianLikelihood()</span>
+<span class="sd">    &gt;&gt;&gt; posterior = likelihood(torch.tensor(0.0))</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">in_features</span> <span class="o">=</span> <span class="mi">1</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">mu</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">distributions</span><span class="o">.</span><span class="n">Normal</span><span class="p">(</span><span class="n">mu</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">mu</span><span class="p">))</span></div>
+
 <div class="viewcode-block" id="NeuralNetworkRegressor"><a class="viewcode-back" href="../../../autosummary/malt.models.regressor.NeuralNetworkRegressor.html#malt.models.regressor.NeuralNetworkRegressor">[docs]</a><span class="k">class</span> <span class="nc">NeuralNetworkRegressor</span><span class="p">(</span><span class="n">Regressor</span><span class="p">):</span>
-    <span class="sd">&quot;&quot;&quot; Regressor with neural network. &quot;&quot;&quot;</span>
+    <span class="sd">&quot;&quot;&quot; Regressor with neural network.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    in_features : int = 128</span>
+<span class="sd">        Input features.</span>
+
+<span class="sd">    hidden_features : int = 128</span>
+<span class="sd">        Hidden features.</span>
+
+<span class="sd">    out_features : int = 2</span>
+<span class="sd">        Output features.</span>
+
+<span class="sd">    activation : torch.nn.Module = torch.nn.ELU()</span>
+<span class="sd">        Activation function.</span>
+
+<span class="sd">    likelihood : type</span>
+<span class="sd">        Factory of likelihood function.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="NeuralNetworkRegressor.__init__"><a class="viewcode-back" href="../../../autosummary/malt.models.regressor.NeuralNetworkRegressor.html#malt.models.regressor.NeuralNetworkRegressor.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">in_features</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span>
-        <span class="n">hidden_features</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span>
-        <span class="n">out_features</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
-        <span class="n">depth</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
-        <span class="n">activation</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">ReLU</span><span class="p">(),</span>
+        <span class="n">in_features</span> <span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span>
+        <span class="n">hidden_features</span> <span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span>
+        <span class="n">depth</span> <span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
+        <span class="n">activation</span> <span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">ELU</span><span class="p">(),</span>
+        <span class="n">likelihood</span> <span class="p">:</span> <span class="n">NeuralNetworkLikelihood</span> <span class="o">=</span> \
+            <span class="n">HeteroschedasticGaussianLikelihood</span><span class="p">(),</span>
+        <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">NeuralNetworkRegressor</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">in_features</span><span class="o">=</span><span class="n">in_features</span><span class="p">,</span> <span class="n">out_features</span><span class="o">=</span><span class="n">out_features</span>
+            <span class="n">in_features</span><span class="o">=</span><span class="n">in_features</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="c1"># bookkeeping</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">in_features</span> <span class="o">=</span> <span class="n">in_features</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">hidden_features</span> <span class="o">=</span> <span class="n">hidden_features</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">out_features</span> <span class="o">=</span> <span class="n">out_features</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">likelihood</span> <span class="o">=</span> <span class="n">likelihood</span>
+
+        <span class="n">out_features</span> <span class="o">=</span> <span class="n">likelihood</span><span class="o">.</span><span class="n">in_features</span>
 
         <span class="c1"># neural network</span>
         <span class="n">modules</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">modules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">activation</span><span class="p">)</span>
         <span class="n">_in_features</span> <span class="o">=</span> <span class="n">in_features</span>
         <span class="k">for</span> <span class="n">idx</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">depth</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
             <span class="n">modules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">_in_features</span><span class="p">,</span> <span class="n">hidden_features</span><span class="p">))</span>
@@ -167,199 +255,68 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">ff</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span><span class="o">*</span><span class="n">modules</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="NeuralNetworkRegressor.forward"><a class="viewcode-back" href="../../../autosummary/malt.models.regressor.NeuralNetworkRegressor.html#malt.models.regressor.NeuralNetworkRegressor.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">ff</span><span class="p">(</span><span class="n">x</span><span class="p">)</span></div></div>
+        <span class="n">parameters</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ff</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">dim</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">posterior</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">likelihood</span><span class="p">(</span><span class="o">*</span><span class="n">parameters</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">posterior</span></div></div>
 
+<span class="k">class</span> <span class="nc">_ExactGaussianProcess</span><span class="p">(</span><span class="n">gpytorch</span><span class="o">.</span><span class="n">models</span><span class="o">.</span><span class="n">ExactGP</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">inputs</span><span class="p">,</span> <span class="n">targets</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">inputs</span><span class="p">,</span> <span class="n">targets</span><span class="p">,</span> <span class="n">gpytorch</span><span class="o">.</span><span class="n">likelihoods</span><span class="o">.</span><span class="n">GaussianLikelihood</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mean_module</span> <span class="o">=</span> <span class="n">gpytorch</span><span class="o">.</span><span class="n">means</span><span class="o">.</span><span class="n">LinearMean</span><span class="p">(</span><span class="n">inputs</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">covar_module</span> <span class="o">=</span> <span class="n">gpytorch</span><span class="o">.</span><span class="n">kernels</span><span class="o">.</span><span class="n">ScaleKernel</span><span class="p">(</span>
+            <span class="n">gpytorch</span><span class="o">.</span><span class="n">kernels</span><span class="o">.</span><span class="n">RBFKernel</span><span class="p">(),</span>
+        <span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="n">mean</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mean_module</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">tanh</span><span class="p">())</span>
+        <span class="n">covar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">covar_module</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">gpytorch</span><span class="o">.</span><span class="n">distributions</span><span class="o">.</span><span class="n">MultivariateNormal</span><span class="p">(</span><span class="n">mean</span><span class="p">,</span> <span class="n">covar</span><span class="p">)</span>
 
 <div class="viewcode-block" id="ExactGaussianProcessRegressor"><a class="viewcode-back" href="../../../autosummary/malt.models.regressor.ExactGaussianProcessRegressor.html#malt.models.regressor.ExactGaussianProcessRegressor">[docs]</a><span class="k">class</span> <span class="nc">ExactGaussianProcessRegressor</span><span class="p">(</span><span class="n">Regressor</span><span class="p">):</span>
-    <span class="n">epsilon</span> <span class="o">=</span> <span class="mf">1e-7</span>
+    <span class="sd">&quot;&quot;&quot;Regressor with exact Gaussian process.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    in_features : int = 128</span>
+<span class="sd">        Input features.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">initialized</span> <span class="o">=</span> <span class="kc">False</span>
 
 <div class="viewcode-block" id="ExactGaussianProcessRegressor.__init__"><a class="viewcode-back" href="../../../autosummary/malt.models.regressor.ExactGaussianProcessRegressor.html#malt.models.regressor.ExactGaussianProcessRegressor.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
-        <span class="n">in_features</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span>
-        <span class="n">out_features</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span>
-        <span class="n">kernel_factory</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Module</span> <span class="o">=</span> <span class="n">RBF</span><span class="p">,</span>
-        <span class="n">log_sigma</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="o">-</span><span class="mf">3.0</span><span class="p">,</span>
+        <span class="n">in_features</span> <span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">128</span><span class="p">,</span>
+        <span class="n">num_points</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="p">):</span>
-        <span class="k">assert</span> <span class="n">out_features</span> <span class="o">==</span> <span class="mi">2</span>
-        <span class="nb">super</span><span class="p">(</span><span class="n">ExactGaussianProcessRegressor</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
-            <span class="n">in_features</span><span class="o">=</span><span class="n">in_features</span><span class="p">,</span>
-            <span class="n">out_features</span><span class="o">=</span><span class="n">out_features</span><span class="p">,</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">in_features</span><span class="o">=</span><span class="n">in_features</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span>
+            <span class="s2">&quot;x_placeholder&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">num_points</span><span class="p">,</span> <span class="n">in_features</span><span class="p">),</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">register_buffer</span><span class="p">(</span>
+            <span class="s2">&quot;y_placeholder&quot;</span><span class="p">,</span> <span class="n">torch</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">num_points</span><span class="p">,</span> <span class="p">),</span>
         <span class="p">)</span>
 
-        <span class="c1"># construct kernel</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">kernel</span> <span class="o">=</span> <span class="n">kernel_factory</span><span class="p">(</span>
-            <span class="n">in_features</span><span class="o">=</span><span class="n">in_features</span><span class="p">,</span>
-        <span class="p">)</span>
-
-        <span class="bp">self</span><span class="o">.</span><span class="n">in_features</span> <span class="o">=</span> <span class="n">in_features</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">log_sigma</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Parameter</span><span class="p">(</span>
-            <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">log_sigma</span><span class="p">),</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gp</span> <span class="o">=</span> <span class="n">_ExactGaussianProcess</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">x_placeholder</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">y_placeholder</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">likelihood</span> <span class="o">=</span> <span class="n">gpytorch</span><span class="o">.</span><span class="n">likelihoods</span><span class="o">.</span><span class="n">GaussianLikelihood</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mll</span> <span class="o">=</span> <span class="n">gpytorch</span><span class="o">.</span><span class="n">mlls</span><span class="o">.</span><span class="n">ExactMarginalLogLikelihood</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">likelihood</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">gp</span><span class="p">,</span>
         <span class="p">)</span></div>
 
-    <span class="k">def</span> <span class="nf">_get_kernel_and_auxiliary_variables</span><span class="p">(</span>
-        <span class="bp">self</span><span class="p">,</span>
-        <span class="n">x_tr</span><span class="p">,</span>
-        <span class="n">y_tr</span><span class="p">,</span>
-        <span class="n">x_te</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-    <span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot; Get kernel and auxiliary variables for forward pass. &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="ExactGaussianProcessRegressor.forward"><a class="viewcode-back" href="../../../autosummary/malt.models.regressor.ExactGaussianProcessRegressor.html#malt.models.regressor.ExactGaussianProcessRegressor.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">representation</span><span class="p">):</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">gp</span><span class="p">(</span><span class="n">representation</span><span class="p">)</span></div>
 
-        <span class="c1"># compute the kernels</span>
-        <span class="n">k_tr_tr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_perturb</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kernel</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">x_tr</span><span class="p">,</span> <span class="n">x_tr</span><span class="p">))</span>
-
-        <span class="k">if</span> <span class="n">x_te</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>  <span class="c1"># during test</span>
-            <span class="n">k_te_te</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_perturb</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kernel</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">x_te</span><span class="p">,</span> <span class="n">x_te</span><span class="p">))</span>
-            <span class="n">k_te_tr</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_perturb</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">kernel</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">x_te</span><span class="p">,</span> <span class="n">x_tr</span><span class="p">))</span>
-            <span class="c1"># k_tr_te = self.forward(x_tr, x_te)</span>
-            <span class="n">k_tr_te</span> <span class="o">=</span> <span class="n">k_te_tr</span><span class="o">.</span><span class="n">t</span><span class="p">()</span>  <span class="c1"># save time</span>
-
-        <span class="k">else</span><span class="p">:</span>  <span class="c1"># during train</span>
-            <span class="n">k_te_te</span> <span class="o">=</span> <span class="n">k_te_tr</span> <span class="o">=</span> <span class="n">k_tr_te</span> <span class="o">=</span> <span class="n">k_tr_tr</span>
-
-        <span class="c1"># (batch_size_tr, batch_size_tr)</span>
-        <span class="n">k_plus_sigma</span> <span class="o">=</span> <span class="n">k_tr_tr</span> <span class="o">+</span> <span class="n">torch</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">log_sigma</span><span class="p">)</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span>
-            <span class="n">k_tr_tr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">device</span><span class="o">=</span><span class="n">k_tr_tr</span><span class="o">.</span><span class="n">device</span>
-        <span class="p">)</span>
-
-        <span class="c1"># (batch_size_tr, batch_size_tr)</span>
-        <span class="n">l_low</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">cholesky</span><span class="p">(</span><span class="n">k_plus_sigma</span><span class="p">)</span>
-        <span class="n">l_up</span> <span class="o">=</span> <span class="n">l_low</span><span class="o">.</span><span class="n">t</span><span class="p">()</span>
-
-        <span class="c1"># (batch_size_tr. 1)</span>
-        <span class="n">l_low_over_y</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">triangular_solve</span><span class="p">(</span>
-            <span class="nb">input</span><span class="o">=</span><span class="n">y_tr</span><span class="p">,</span> <span class="n">A</span><span class="o">=</span><span class="n">l_low</span><span class="p">,</span> <span class="n">upper</span><span class="o">=</span><span class="kc">False</span>
-        <span class="p">)</span>
-
-        <span class="c1"># (batch_size_tr, 1)</span>
-        <span class="n">alpha</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">triangular_solve</span><span class="p">(</span>
-            <span class="nb">input</span><span class="o">=</span><span class="n">l_low_over_y</span><span class="p">,</span> <span class="n">A</span><span class="o">=</span><span class="n">l_up</span><span class="p">,</span> <span class="n">upper</span><span class="o">=</span><span class="kc">True</span>
-        <span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">k_tr_tr</span><span class="p">,</span> <span class="n">k_te_te</span><span class="p">,</span> <span class="n">k_te_tr</span><span class="p">,</span> <span class="n">k_tr_te</span><span class="p">,</span> <span class="n">l_low</span><span class="p">,</span> <span class="n">alpha</span>
-
-<div class="viewcode-block" id="ExactGaussianProcessRegressor.condition"><a class="viewcode-back" href="../../../autosummary/malt.models.regressor.ExactGaussianProcessRegressor.html#malt.models.regressor.ExactGaussianProcessRegressor.condition">[docs]</a>    <span class="k">def</span> <span class="nf">condition</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_te</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="n">x_tr</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">y_tr</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Calculate the predictive distribution given `x_te`.</span>
-
-<span class="sd">        Note</span>
-<span class="sd">        ----</span>
-<span class="sd">        Here we allow the speicifaction of sampler but won&#39;t actually</span>
-<span class="sd">        use it here in this version.</span>
-
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        x_te : `torch.Tensor`, `shape=(n_te, hidden_dimension)`</span>
-<span class="sd">            Test input.</span>
-
-<span class="sd">        x_tr : `torch.Tensor`, `shape=(n_tr, hidden_dimension)`</span>
-<span class="sd">             (Default value = None)</span>
-<span class="sd">             Training input.</span>
-
-<span class="sd">        y_tr : `torch.Tensor`, `shape=(n_tr, 1)`</span>
-<span class="sd">             (Default value = None)</span>
-<span class="sd">             Test input.</span>
-
-<span class="sd">        sampler : `torch.optim.Optimizer` or `pinot.Sampler`</span>
-<span class="sd">             (Default value = None)</span>
-<span class="sd">             Sampler.</span>
-
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        distribution : `torch.distributions.Distribution`</span>
-<span class="sd">            Predictive distribution.</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
-
-        <span class="c1"># get parameters</span>
-        <span class="p">(</span>
-            <span class="n">k_tr_tr</span><span class="p">,</span>
-            <span class="n">k_te_te</span><span class="p">,</span>
-            <span class="n">k_te_tr</span><span class="p">,</span>
-            <span class="n">k_tr_te</span><span class="p">,</span>
-            <span class="n">l_low</span><span class="p">,</span>
-            <span class="n">alpha</span><span class="p">,</span>
-        <span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_kernel_and_auxiliary_variables</span><span class="p">(</span><span class="n">x_tr</span><span class="p">,</span> <span class="n">y_tr</span><span class="p">,</span> <span class="n">x_te</span><span class="p">)</span>
-
-        <span class="c1"># compute mean</span>
-        <span class="c1"># (batch_size_te, 1)</span>
-        <span class="n">mean</span> <span class="o">=</span> <span class="n">k_te_tr</span> <span class="o">@</span> <span class="n">alpha</span>
-
-        <span class="c1"># (batch_size_tr, batch_size_te)</span>
-        <span class="n">v</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">triangular_solve</span><span class="p">(</span><span class="nb">input</span><span class="o">=</span><span class="n">k_tr_te</span><span class="p">,</span> <span class="n">A</span><span class="o">=</span><span class="n">l_low</span><span class="p">,</span> <span class="n">upper</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
-
-        <span class="c1"># (batch_size_te, batch_size_te)</span>
-        <span class="n">variance</span> <span class="o">=</span> <span class="n">k_te_te</span> <span class="o">-</span> <span class="n">v</span><span class="o">.</span><span class="n">t</span><span class="p">()</span> <span class="o">@</span> <span class="n">v</span>
-
-        <span class="c1"># ensure symetric</span>
-        <span class="n">variance</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">variance</span> <span class="o">+</span> <span class="n">variance</span><span class="o">.</span><span class="n">t</span><span class="p">())</span>
-
-        <span class="c1"># $ p(y|X) = \int p(y|f)p(f|x) df $</span>
-        <span class="c1"># variance += torch.exp(self.log_sigma) * torch.eye(</span>
-        <span class="c1">#         *variance.shape,</span>
-        <span class="c1">#         device=variance.device)</span>
-
-        <span class="c1"># construct noise predictive distribution</span>
-        <span class="n">distribution</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="n">torch</span><span class="o">.</span><span class="n">distributions</span><span class="o">.</span><span class="n">multivariate_normal</span><span class="o">.</span><span class="n">MultivariateNormal</span><span class="p">(</span>
-                <span class="n">mean</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">variance</span>
+<div class="viewcode-block" id="ExactGaussianProcessRegressor.loss"><a class="viewcode-back" href="../../../autosummary/malt.models.regressor.ExactGaussianProcessRegressor.html#malt.models.regressor.ExactGaussianProcessRegressor.loss">[docs]</a>    <span class="k">def</span> <span class="nf">loss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">representation</span><span class="p">,</span> <span class="n">observation</span><span class="p">):</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">initialized</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">training</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gp</span><span class="o">.</span><span class="n">set_train_data</span><span class="p">(</span>
+                <span class="n">inputs</span><span class="o">=</span><span class="n">representation</span><span class="p">,</span>
+                <span class="n">targets</span><span class="o">=</span><span class="n">observation</span><span class="p">,</span>
             <span class="p">)</span>
-        <span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">initialized</span> <span class="o">=</span> <span class="kc">True</span>
 
-        <span class="k">return</span> <span class="n">distribution</span></div>
-
-    <span class="k">def</span> <span class="nf">_perturb</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;Add small noise `epsilon` to the diagonal of covariant matrix.</span>
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        k : `torch.Tensor`, `shape=(n_data_points, n_data_points)`</span>
-<span class="sd">            Covariant matrix.</span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        k : `torch.Tensor`, `shape=(n_data_points, n_data_points)`</span>
-<span class="sd">            Preturbed covariant matrix.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># introduce noise along the diagonal</span>
-        <span class="n">noise</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">epsilon</span> <span class="o">*</span> <span class="n">torch</span><span class="o">.</span><span class="n">eye</span><span class="p">(</span><span class="o">*</span><span class="n">k</span><span class="o">.</span><span class="n">shape</span><span class="p">,</span> <span class="n">device</span><span class="o">=</span><span class="n">k</span><span class="o">.</span><span class="n">device</span><span class="p">)</span>
-
-        <span class="k">return</span> <span class="n">k</span> <span class="o">+</span> <span class="n">noise</span>
-
-<div class="viewcode-block" id="ExactGaussianProcessRegressor.loss"><a class="viewcode-back" href="../../../autosummary/malt.models.regressor.ExactGaussianProcessRegressor.html#malt.models.regressor.ExactGaussianProcessRegressor.loss">[docs]</a>    <span class="k">def</span> <span class="nf">loss</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_tr</span><span class="p">,</span> <span class="n">y_tr</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-        <span class="sa">r</span><span class="sd">&quot;&quot;&quot;Compute the loss.</span>
-<span class="sd">        Note</span>
-<span class="sd">        ----</span>
-<span class="sd">        Defined to be negative Gaussian likelihood.</span>
-<span class="sd">        Parameters</span>
-<span class="sd">        ----------</span>
-<span class="sd">        x_tr : `torch.Tensor`, `shape=(n_training_data, hidden_dimension)`</span>
-<span class="sd">            Input of training data.</span>
-<span class="sd">        y_tr : `torch.Tensor`, `shape=(n_training_data, 1)`</span>
-<span class="sd">            Target of training data.</span>
-<span class="sd">        Returns</span>
-<span class="sd">        -------</span>
-<span class="sd">        nll : `torch.Tensor`, `shape=(,)`</span>
-<span class="sd">            Negative log likelihood.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># point data to object</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_x_tr</span> <span class="o">=</span> <span class="n">x_tr</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_y_tr</span> <span class="o">=</span> <span class="n">y_tr</span>
-
-        <span class="c1"># get the parameters</span>
-        <span class="p">(</span>
-            <span class="n">k_tr_tr</span><span class="p">,</span>
-            <span class="n">k_te_te</span><span class="p">,</span>
-            <span class="n">k_te_tr</span><span class="p">,</span>
-            <span class="n">k_tr_te</span><span class="p">,</span>
-            <span class="n">l_low</span><span class="p">,</span>
-            <span class="n">alpha</span><span class="p">,</span>
-        <span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_kernel_and_auxiliary_variables</span><span class="p">(</span><span class="n">x_tr</span><span class="p">,</span> <span class="n">y_tr</span><span class="p">)</span>
-
-        <span class="kn">import</span> <span class="nn">math</span>
-
-        <span class="c1"># we return the exact nll with constant</span>
-        <span class="n">nll</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">y_tr</span><span class="o">.</span><span class="n">t</span><span class="p">()</span> <span class="o">@</span> <span class="n">alpha</span><span class="p">)</span>
-            <span class="o">+</span> <span class="n">torch</span><span class="o">.</span><span class="n">trace</span><span class="p">(</span><span class="n">l_low</span><span class="p">)</span>
-            <span class="o">+</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="n">y_tr</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="mf">2.0</span> <span class="o">*</span> <span class="n">math</span><span class="o">.</span><span class="n">pi</span><span class="p">)</span>
-        <span class="p">)</span>
+        <span class="n">nll</span> <span class="o">=</span> <span class="o">-</span><span class="bp">self</span><span class="o">.</span><span class="n">mll</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">gp</span><span class="p">(</span><span class="n">representation</span><span class="p">),</span>
+            <span class="n">observation</span><span class="p">,</span>
+        <span class="p">)</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
 
         <span class="k">return</span> <span class="n">nll</span></div></div>
 </pre></div>
@@ -371,7 +328,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2020, Yuanqing Wang @ choderalab // MSKCC..</p>
+    <p>&#169; Copyright 2022, Yuanqing Wang @ choderalab // MSKCC..</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

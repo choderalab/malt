@@ -19,14 +19,12 @@
       ~Dataset.__init__
       ~Dataset.append
       ~Dataset.apply
-      ~Dataset.batch_of_g
-      ~Dataset.batch_of_g_and_y
+      ~Dataset.batch
       ~Dataset.clone
       ~Dataset.erase_annotation
       ~Dataset.featurize_all
-      ~Dataset.get_batch_of_all_g
-      ~Dataset.register_datapipe_as_function
-      ~Dataset.register_function
+      ~Dataset.shuffle
+      ~Dataset.split
       ~Dataset.view
    
    
@@ -37,7 +35,7 @@
 
    .. autosummary::
    
-      ~Dataset.functions
       ~Dataset.lookup
+      ~Dataset.smiles
    
    

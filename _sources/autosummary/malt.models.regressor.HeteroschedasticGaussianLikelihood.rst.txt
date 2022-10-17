@@ -1,0 +1,31 @@
+malt.models.regressor.HeteroschedasticGaussianLikelihood
+========================================================
+
+.. currentmodule:: malt.models.regressor
+
+.. autoclass:: HeteroschedasticGaussianLikelihood
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~HeteroschedasticGaussianLikelihood.__init__
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~HeteroschedasticGaussianLikelihood.in_features
+   
+   

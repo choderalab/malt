@@ -1,0 +1,31 @@
+malt.models.regressor.HomoschedasticGaussianLikelihood
+======================================================
+
+.. currentmodule:: malt.models.regressor
+
+.. autoclass:: HomoschedasticGaussianLikelihood
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~HomoschedasticGaussianLikelihood.__init__
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~HomoschedasticGaussianLikelihood.in_features
+   
+   

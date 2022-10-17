@@ -1,4 +1,4 @@
-﻿malt.models.supervised\_model.GaussianProcessSupervisedModel
+malt.models.supervised\_model.GaussianProcessSupervisedModel
 ============================================================
 
 .. currentmodule:: malt.models.supervised_model
@@ -30,10 +30,6 @@
       ~GaussianProcessSupervisedModel.extra_repr
       ~GaussianProcessSupervisedModel.float
       ~GaussianProcessSupervisedModel.forward
-      ~GaussianProcessSupervisedModel.get_buffer
-      ~GaussianProcessSupervisedModel.get_extra_state
-      ~GaussianProcessSupervisedModel.get_parameter
-      ~GaussianProcessSupervisedModel.get_submodule
       ~GaussianProcessSupervisedModel.half
       ~GaussianProcessSupervisedModel.load_state_dict
       ~GaussianProcessSupervisedModel.loss
@@ -47,17 +43,13 @@
       ~GaussianProcessSupervisedModel.register_buffer
       ~GaussianProcessSupervisedModel.register_forward_hook
       ~GaussianProcessSupervisedModel.register_forward_pre_hook
-      ~GaussianProcessSupervisedModel.register_full_backward_hook
       ~GaussianProcessSupervisedModel.register_parameter
       ~GaussianProcessSupervisedModel.requires_grad_
-      ~GaussianProcessSupervisedModel.set_extra_state
       ~GaussianProcessSupervisedModel.share_memory
       ~GaussianProcessSupervisedModel.state_dict
       ~GaussianProcessSupervisedModel.to
-      ~GaussianProcessSupervisedModel.to_empty
       ~GaussianProcessSupervisedModel.train
       ~GaussianProcessSupervisedModel.type
-      ~GaussianProcessSupervisedModel.xpu
       ~GaussianProcessSupervisedModel.zero_grad
    
    
@@ -72,6 +64,5 @@
       ~GaussianProcessSupervisedModel.dump_patches
       ~GaussianProcessSupervisedModel.x_tr
       ~GaussianProcessSupervisedModel.y_tr
-      ~GaussianProcessSupervisedModel.training
    
    

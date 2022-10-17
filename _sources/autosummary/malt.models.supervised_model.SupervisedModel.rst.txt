@@ -1,4 +1,4 @@
-﻿malt.models.supervised\_model.SupervisedModel
+malt.models.supervised\_model.SupervisedModel
 =============================================
 
 .. currentmodule:: malt.models.supervised_model
@@ -22,7 +22,6 @@
       ~SupervisedModel.bfloat16
       ~SupervisedModel.buffers
       ~SupervisedModel.children
-      ~SupervisedModel.condition
       ~SupervisedModel.cpu
       ~SupervisedModel.cuda
       ~SupervisedModel.double
@@ -35,6 +34,7 @@
       ~SupervisedModel.get_parameter
       ~SupervisedModel.get_submodule
       ~SupervisedModel.half
+      ~SupervisedModel.ipu
       ~SupervisedModel.load_state_dict
       ~SupervisedModel.loss
       ~SupervisedModel.modules
@@ -48,6 +48,8 @@
       ~SupervisedModel.register_forward_hook
       ~SupervisedModel.register_forward_pre_hook
       ~SupervisedModel.register_full_backward_hook
+      ~SupervisedModel.register_load_state_dict_post_hook
+      ~SupervisedModel.register_module
       ~SupervisedModel.register_parameter
       ~SupervisedModel.requires_grad_
       ~SupervisedModel.set_extra_state
