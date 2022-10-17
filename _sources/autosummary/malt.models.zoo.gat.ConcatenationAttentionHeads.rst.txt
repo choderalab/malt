@@ -1,0 +1,76 @@
+malt.models.zoo.gat.ConcatenationAttentionHeads
+===============================================
+
+.. currentmodule:: malt.models.zoo.gat
+
+.. autoclass:: ConcatenationAttentionHeads
+   :members:
+   :show-inheritance:
+   :inherited-members:
+
+   
+   .. automethod:: __init__
+
+   
+   .. rubric:: Methods
+
+   .. autosummary::
+   
+      ~ConcatenationAttentionHeads.__init__
+      ~ConcatenationAttentionHeads.add_module
+      ~ConcatenationAttentionHeads.apply
+      ~ConcatenationAttentionHeads.bfloat16
+      ~ConcatenationAttentionHeads.buffers
+      ~ConcatenationAttentionHeads.children
+      ~ConcatenationAttentionHeads.cpu
+      ~ConcatenationAttentionHeads.cuda
+      ~ConcatenationAttentionHeads.double
+      ~ConcatenationAttentionHeads.eval
+      ~ConcatenationAttentionHeads.extra_repr
+      ~ConcatenationAttentionHeads.float
+      ~ConcatenationAttentionHeads.forward
+      ~ConcatenationAttentionHeads.get_buffer
+      ~ConcatenationAttentionHeads.get_extra_state
+      ~ConcatenationAttentionHeads.get_parameter
+      ~ConcatenationAttentionHeads.get_submodule
+      ~ConcatenationAttentionHeads.half
+      ~ConcatenationAttentionHeads.ipu
+      ~ConcatenationAttentionHeads.load_state_dict
+      ~ConcatenationAttentionHeads.modules
+      ~ConcatenationAttentionHeads.named_buffers
+      ~ConcatenationAttentionHeads.named_children
+      ~ConcatenationAttentionHeads.named_modules
+      ~ConcatenationAttentionHeads.named_parameters
+      ~ConcatenationAttentionHeads.parameters
+      ~ConcatenationAttentionHeads.register_backward_hook
+      ~ConcatenationAttentionHeads.register_buffer
+      ~ConcatenationAttentionHeads.register_forward_hook
+      ~ConcatenationAttentionHeads.register_forward_pre_hook
+      ~ConcatenationAttentionHeads.register_full_backward_hook
+      ~ConcatenationAttentionHeads.register_load_state_dict_post_hook
+      ~ConcatenationAttentionHeads.register_module
+      ~ConcatenationAttentionHeads.register_parameter
+      ~ConcatenationAttentionHeads.requires_grad_
+      ~ConcatenationAttentionHeads.set_extra_state
+      ~ConcatenationAttentionHeads.share_memory
+      ~ConcatenationAttentionHeads.state_dict
+      ~ConcatenationAttentionHeads.to
+      ~ConcatenationAttentionHeads.to_empty
+      ~ConcatenationAttentionHeads.train
+      ~ConcatenationAttentionHeads.type
+      ~ConcatenationAttentionHeads.xpu
+      ~ConcatenationAttentionHeads.zero_grad
+   
+   
+
+   
+   
+   .. rubric:: Attributes
+
+   .. autosummary::
+   
+      ~ConcatenationAttentionHeads.T_destination
+      ~ConcatenationAttentionHeads.dump_patches
+      ~ConcatenationAttentionHeads.training
+   
+   

@@ -1,7 +1,7 @@
-﻿malt.models
-===========
+malt.models.zoo
+===============
 
-.. automodule:: malt.models
+.. automodule:: malt.models.zoo
   
    
    
@@ -29,8 +29,5 @@
    :recursive:
 
 
-   malt.models.regressor
-   malt.models.representation
-   malt.models.supervised_model
-   malt.models.zoo
+   malt.models.zoo.gat
 
