@@ -21,9 +21,7 @@ malt.agents.player
    
       ModelBasedPlayer
       Player
-      RandomPlayer
       SequentialModelBasedPlayer
-      SequentialRandomPlayer
    
    
 

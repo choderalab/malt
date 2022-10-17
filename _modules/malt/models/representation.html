@@ -151,13 +151,12 @@
                 <span class="n">layer</span><span class="p">(</span><span class="n">hidden_features</span><span class="p">,</span> <span class="n">hidden_features</span><span class="p">),</span>
             <span class="p">)</span>
 
-        <span class="c1"># self.embedding_out = torch.nn.Sequential(</span>
-        <span class="c1">#     torch.nn.Linear(hidden_features, hidden_features),</span>
-        <span class="c1">#     activation,</span>
-        <span class="c1"># )</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">embedding_out</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Sequential</span><span class="p">(</span>
+            <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden_features</span><span class="p">,</span> <span class="n">hidden_features</span><span class="p">),</span>
+            <span class="n">activation</span><span class="p">,</span>
+        <span class="p">)</span>
 
-        <span class="c1"># output</span>
-        <span class="c1"># self.ff = torch.nn.Linear(hidden_features, out_features)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ff</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="n">hidden_features</span><span class="p">,</span> <span class="n">out_features</span><span class="p">)</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">depth</span> <span class="o">=</span> <span class="n">depth</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">global_pool</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">dgl</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">_nodes&quot;</span> <span class="o">%</span> <span class="n">global_pool</span><span class="p">)</span>
@@ -195,14 +194,14 @@
             <span class="n">h</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="s2">&quot;gn</span><span class="si">%s</span><span class="s2">&quot;</span> <span class="o">%</span> <span class="n">idx</span><span class="p">)(</span><span class="n">g</span><span class="p">,</span> <span class="n">h</span><span class="p">)</span>
             <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">activation</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
 
-        <span class="c1"># h = self.embedding_out(h)</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">embedding_out</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
         <span class="n">g</span><span class="o">.</span><span class="n">ndata</span><span class="p">[</span><span class="n">field</span><span class="p">]</span> <span class="o">=</span> <span class="n">h</span>
 
         <span class="c1"># global pool</span>
         <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">global_pool</span><span class="p">(</span><span class="n">g</span><span class="p">,</span> <span class="n">field</span><span class="p">)</span>
 
         <span class="c1"># final feedforward</span>
-        <span class="c1"># h = self.ff(h)</span>
+        <span class="n">h</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ff</span><span class="p">(</span><span class="n">h</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">h</span></div></div>
 </pre></div>

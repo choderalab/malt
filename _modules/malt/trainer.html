@@ -193,9 +193,13 @@
         <span class="n">player</span><span class="p">,</span>
         <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">):</span>
+        <span class="n">player</span><span class="o">.</span><span class="n">portfolio</span><span class="o">.</span><span class="n">shuffle</span><span class="p">()</span>
+        <span class="n">data_train</span><span class="p">,</span> <span class="n">data_valid</span> <span class="o">=</span> <span class="n">player</span><span class="o">.</span><span class="n">portfolio</span><span class="o">.</span><span class="n">split</span><span class="p">([</span><span class="mi">9</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;fuck&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_train</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_valid</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">_default_trainer_without_player</span><span class="p">(</span>
             <span class="n">player</span><span class="o">.</span><span class="n">model</span><span class="p">,</span>
-            <span class="n">player</span><span class="o">.</span><span class="n">portfolio</span><span class="p">,</span>
+            <span class="n">data_train</span><span class="p">,</span>
+            <span class="n">data_valid</span><span class="p">,</span>
             <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
         <span class="p">)</span>
 
