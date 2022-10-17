@@ -78,7 +78,10 @@
         <span class="n">layer</span><span class="p">:</span> <span class="nb">type</span><span class="o">=</span><span class="n">dgl</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">GATConv</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">layer</span> <span class="o">=</span> <span class="n">layer</span><span class="p">(</span><span class="n">in_features</span><span class="p">,</span> <span class="n">out_features</span> <span class="o">//</span> <span class="n">num_heads</span><span class="p">,</span> <span class="n">num_heads</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">layer</span> <span class="o">=</span> <span class="n">layer</span><span class="p">(</span>
+            <span class="n">in_features</span><span class="p">,</span> <span class="n">out_features</span> <span class="o">//</span> <span class="n">num_heads</span><span class="p">,</span> <span class="n">num_heads</span><span class="p">,</span>
+            <span class="n">allow_zero_in_degree</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">layer</span><span class="o">.</span><span class="vm">__doc__</span></div>
 
 <div class="viewcode-block" id="ConcatenationAttentionHeads.forward"><a class="viewcode-back" href="../../../../autosummary/malt.models.zoo.gat.ConcatenationAttentionHeads.html#malt.models.zoo.gat.ConcatenationAttentionHeads.forward">[docs]</a>    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">graph</span><span class="p">,</span> <span class="n">feat</span><span class="p">):</span>
