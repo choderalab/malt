@@ -95,6 +95,7 @@
     <span class="n">patience</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
     <span class="n">without_player</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">,</span>
     <span class="n">min_learning_rate</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1e-6</span><span class="p">,</span>
+    <span class="n">no_validation_threshold</span> <span class="o">=</span> <span class="mi">20</span><span class="p">,</span>
 <span class="p">):</span>
     <span class="sd">&quot;&quot;&quot; Get the default training scheme for models.</span>
 
@@ -194,8 +195,11 @@
         <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
     <span class="p">):</span>
         <span class="n">player</span><span class="o">.</span><span class="n">portfolio</span><span class="o">.</span><span class="n">shuffle</span><span class="p">()</span>
-        <span class="n">data_train</span><span class="p">,</span> <span class="n">data_valid</span> <span class="o">=</span> <span class="n">player</span><span class="o">.</span><span class="n">portfolio</span><span class="o">.</span><span class="n">split</span><span class="p">([</span><span class="mi">9</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;fuck&quot;</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_train</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">data_valid</span><span class="p">))</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">player</span><span class="o">.</span><span class="n">portfolio</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="n">no_validation_threshold</span><span class="p">:</span>
+            <span class="n">data_train</span><span class="p">,</span> <span class="n">data_valid</span> <span class="o">=</span> <span class="n">player</span><span class="o">.</span><span class="n">portfolio</span><span class="o">.</span><span class="n">split</span><span class="p">([</span><span class="mi">9</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">data_train</span> <span class="o">=</span> <span class="n">data_valid</span> <span class="o">=</span> <span class="n">player</span><span class="o">.</span><span class="n">portfolio</span>
+
         <span class="k">return</span> <span class="n">_default_trainer_without_player</span><span class="p">(</span>
             <span class="n">player</span><span class="o">.</span><span class="n">model</span><span class="p">,</span>
             <span class="n">data_train</span><span class="p">,</span>
