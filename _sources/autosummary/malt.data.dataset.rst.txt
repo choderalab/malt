@@ -1,4 +1,4 @@
-malt.data.dataset
+﻿malt.data.dataset
 =================
 
 .. automodule:: malt.data.dataset
@@ -8,6 +8,13 @@ malt.data.dataset
    
 
    
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+      :toctree:
+   
+      from_pandas
    
    
 

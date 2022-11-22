@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>malt.data.dataset &mdash; malt  documentation</title>
+  <title>malt.data.dataset.from_pandas &mdash; malt  documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
@@ -18,8 +18,8 @@
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
-    <link rel="next" title="malt.data.dataset.from_pandas" href="malt.data.dataset.from_pandas.html" />
-    <link rel="prev" title="malt.data.collections.linear_alkanes" href="malt.data.collections.linear_alkanes.html" /> 
+    <link rel="next" title="malt.data.dataset.Dataset" href="malt.data.dataset.Dataset.html" />
+    <link rel="prev" title="malt.data.dataset" href="malt.data.dataset.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -44,8 +44,8 @@
 <li class="toctree-l2"><a class="reference internal" href="malt.agents.html">malt.agents</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="malt.data.html">malt.data</a><ul class="current">
 <li class="toctree-l3"><a class="reference internal" href="malt.data.collections.html">malt.data.collections</a></li>
-<li class="toctree-l3 current"><a class="current reference internal" href="#">malt.data.dataset</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="malt.data.dataset.from_pandas.html">malt.data.dataset.from_pandas</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="malt.data.dataset.html">malt.data.dataset</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">malt.data.dataset.from_pandas</a></li>
 <li class="toctree-l4"><a class="reference internal" href="malt.data.dataset.Dataset.html">malt.data.dataset.Dataset</a></li>
 </ul>
 </li>
@@ -74,9 +74,10 @@
       <li><a href="../index.html" class="icon icon-home"></a></li>
           <li class="breadcrumb-item"><a href="../api.html">API Documentation</a></li>
           <li class="breadcrumb-item"><a href="malt.data.html">malt.data</a></li>
-      <li class="breadcrumb-item active">malt.data.dataset</li>
+          <li class="breadcrumb-item"><a href="malt.data.dataset.html">malt.data.dataset</a></li>
+      <li class="breadcrumb-item active">malt.data.dataset.from_pandas</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/autosummary/malt.data.dataset.rst.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/autosummary/malt.data.dataset.from_pandas.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -84,41 +85,39 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <section id="module-malt.data.dataset">
-<span id="malt-data-dataset"></span><h1>malt.data.dataset<a class="headerlink" href="#module-malt.data.dataset" title="Permalink to this headline"></a></h1>
-<p>Datasets and their serving.</p>
-<p class="rubric">Functions</p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="malt.data.dataset.from_pandas.html#malt.data.dataset.from_pandas" title="malt.data.dataset.from_pandas"><code class="xref py py-obj docutils literal notranslate"><span class="pre">from_pandas</span></code></a>(dataframe, smiles_column, y_column)</p></td>
-<td><p>Read dataset from pandas DataFrame.</p></td>
-</tr>
-</tbody>
-</table>
-<p class="rubric">Classes</p>
-<table class="longtable docutils align-default">
-<colgroup>
-<col style="width: 10%" />
-<col style="width: 90%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><a class="reference internal" href="malt.data.dataset.Dataset.html#malt.data.dataset.Dataset" title="malt.data.dataset.Dataset"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Dataset</span></code></a>([molecules])</p></td>
-<td><p>A collection of Molecules with functionalities to be compatible with training and optimization.</p></td>
-</tr>
-</tbody>
-</table>
+  <section id="malt-data-dataset-from-pandas">
+<h1>malt.data.dataset.from_pandas<a class="headerlink" href="#malt-data-dataset-from-pandas" title="Permalink to this headline"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="malt.data.dataset.from_pandas">
+<span class="sig-prename descclassname"><span class="pre">malt.data.dataset.</span></span><span class="sig-name descname"><span class="pre">from_pandas</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframe</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">smiles_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/malt/data/dataset.html#from_pandas"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#malt.data.dataset.from_pandas" title="Permalink to this definition"></a></dt>
+<dd><p>Read dataset from pandas DataFrame.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dataframe</strong> (<em>pandas.DataFrame</em>) – The dataframe to read from.</p></li>
+<li><p><strong>smiles_column</strong> (<em>str</em>) – The name of the column containing SMILES string.</p></li>
+<li><p><strong>y_column</strong> (<em>str</em>) – The name of the column containing measurement.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataframe</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="o">.</span><span class="n">from_dict</span><span class="p">(</span>
+<span class="gp">... </span>    <span class="p">{</span><span class="s2">&quot;SMILES&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;C&quot;</span><span class="p">,</span> <span class="s2">&quot;CC&quot;</span><span class="p">],</span> <span class="s2">&quot;Y&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">]},</span>
+<span class="gp">... </span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">dataset</span> <span class="o">=</span> <span class="n">from_pandas</span><span class="p">(</span><span class="n">dataframe</span><span class="p">,</span> <span class="s2">&quot;SMILES&quot;</span><span class="p">,</span> <span class="s2">&quot;Y&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="malt.data.collections.linear_alkanes.html" class="btn btn-neutral float-left" title="malt.data.collections.linear_alkanes" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="malt.data.dataset.from_pandas.html" class="btn btn-neutral float-right" title="malt.data.dataset.from_pandas" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="malt.data.dataset.html" class="btn btn-neutral float-left" title="malt.data.dataset" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="malt.data.dataset.Dataset.html" class="btn btn-neutral float-right" title="malt.data.dataset.Dataset" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

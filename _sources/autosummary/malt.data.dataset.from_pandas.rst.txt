@@ -1,0 +1,6 @@
+malt.data.dataset.from\_pandas
+==============================
+
+.. currentmodule:: malt.data.dataset
+
+.. autofunction:: from_pandas

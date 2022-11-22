@@ -53,9 +53,9 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../../index.html">Module code</a> &raquo;</li>
-      <li>malt.data.dataset</li>
+      <li><a href="../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">malt.data.dataset</li>
       <li class="wy-breadcrumbs-aside">
       </li>
   </ul>
@@ -449,6 +449,43 @@
             <span class="o">*</span><span class="n">args</span><span class="p">,</span>
             <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
         <span class="p">)</span></div></div>
+
+<div class="viewcode-block" id="from_pandas"><a class="viewcode-back" href="../../../autosummary/malt.data.dataset.from_pandas.html#malt.data.dataset.from_pandas">[docs]</a><span class="k">def</span> <span class="nf">from_pandas</span><span class="p">(</span>
+    <span class="n">dataframe</span><span class="p">,</span>
+    <span class="n">smiles_column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+    <span class="n">y_column</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span>
+<span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Read dataset from pandas DataFrame.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    dataframe : pandas.DataFrame</span>
+<span class="sd">        The dataframe to read from.</span>
+
+<span class="sd">    smiles_column : str</span>
+<span class="sd">        The name of the column containing SMILES string.</span>
+
+<span class="sd">    y_column : str</span>
+<span class="sd">        The name of the column containing measurement.</span>
+
+<span class="sd">    Examples</span>
+<span class="sd">    --------</span>
+<span class="sd">    &gt;&gt;&gt; import pandas as pd</span>
+<span class="sd">    &gt;&gt;&gt; dataframe = pd.DataFrame.from_dict(</span>
+<span class="sd">    ...     {&quot;SMILES&quot;: [&quot;C&quot;, &quot;CC&quot;], &quot;Y&quot;: [1, 2]},</span>
+<span class="sd">    ... )</span>
+<span class="sd">    &gt;&gt;&gt; dataset = from_pandas(dataframe, &quot;SMILES&quot;, &quot;Y&quot;)</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">smiles_strings</span> <span class="o">=</span> <span class="n">dataframe</span><span class="p">[</span><span class="n">smiles_column</span><span class="p">]</span>
+    <span class="n">ys</span> <span class="o">=</span> <span class="n">dataframe</span><span class="p">[</span><span class="n">y_column</span><span class="p">]</span>
+    <span class="n">molecules</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">smiles</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">smiles_strings</span><span class="p">,</span> <span class="n">ys</span><span class="p">):</span>
+        <span class="n">molecule</span> <span class="o">=</span> <span class="n">Molecule</span><span class="p">(</span><span class="n">smiles</span><span class="p">)</span>
+        <span class="n">molecule</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span>
+        <span class="n">molecules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">molecule</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">molecules</span><span class="p">)</span></div>
 </pre></div>
 
            </div>
