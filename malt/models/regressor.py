@@ -210,6 +210,7 @@ class ExactGaussianProcessRegressor(Regressor):
         num_points: int = 0
     ):
         super().__init__(in_features=in_features)
+        self.num_points = num_points
         self.register_buffer(
             "x_placeholder", torch.zeros(num_points, in_features),
         )
@@ -227,6 +228,9 @@ class ExactGaussianProcessRegressor(Regressor):
         return self.gp(representation)
 
     def loss(self, representation, observation):
+        if len(representation) != self.num_points:
+            self.__init__(self.in_features, len(representation))
+
         if not self.initialized and self.training:
             self.gp.set_train_data(
                 inputs=representation,

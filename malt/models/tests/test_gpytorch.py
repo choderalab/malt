@@ -21,7 +21,7 @@ def test_gpytorch_train():
         ),
         regressor=malt.models.regressor.ExactGaussianProcessRegressor(
             in_features=32,
-            num_points=1,
+            # num_points=1,
         ),
     )
 
