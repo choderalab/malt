@@ -1,3 +1,4 @@
+import numpy as np
 import torch
 import malt
 
@@ -22,16 +23,16 @@ def run(args):
             out_features=args.width,
         ),
         regressor=regressor(
-            num_points=len(data),
             in_features=args.width,
-            # likelihood=malt.models.regressor.HomoschedasticGaussianLikelihood(),
         ),
     )
 
+    policy = getattr(malt.policy, args.policy)
+
     from malt.agents.player import SequentialModelBasedPlayer
     player = SequentialModelBasedPlayer(
-       model = model,
-       policy=malt.policy.Greedy(),
+       model=model,
+       policy=policy(acquisition_size=args.acquisition_size),
        trainer=malt.trainer.get_default_trainer(),
        merchant=malt.agents.merchant.DatasetMerchant(data),
        assayer=malt.agents.assayer.DatasetAssayer(data),
@@ -42,17 +43,21 @@ def run(args):
         if player.step() is None:
             break
 
-    # import json
-    # import pandas as pd
-    # key = dict(vars(args))
-    # key.pop("out")
-    # key = json.dumps(key)
-    # df = pd.DataFrame.from_dict(
-    #     {key: [rmse_valid.item(), rmse_test.item()]},
-    #     orient="index",
-    #     columns=["vl", "te"]
-    # )
-    # df.to_csv(args.out, mode="a")
+    import json
+    history = [molecule.y for molecule in player.portfolio]
+    # history = np.array(history)
+
+    import json
+    import pandas as pd
+    key = dict(vars(args))
+    key.pop("out")
+    key = json.dumps(key)
+    df = pd.DataFrame.from_dict(
+        {key: json.dumps(history)},
+         orient="index",
+         # columns=["vl", "te"]
+    )
+    df.to_csv(args.out, mode="a")
 
 if __name__ == "__main__":
     import argparse
@@ -65,5 +70,7 @@ if __name__ == "__main__":
     parser.add_argument("--reduce_factor", type=float, default=0.5)
     parser.add_argument("--batch_size", type=int, default=16)
     parser.add_argument("--out", type=str, default="out.csv")
+    parser.add_argument("--acquisition_size", type=int, default=1)
+    parser.add_argument("--policy", type=str, default="Greedy")
     args = parser.parse_args()
     run(args)
