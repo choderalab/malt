@@ -31,7 +31,7 @@ def run(args):
     from malt.agents.player import SequentialModelBasedPlayer
     player = SequentialModelBasedPlayer(
        model = model,
-       policy=malt.policy.Greedy(),
+       policy=malt.policy.UtilityFunction(malt.utility_functions.),
        trainer=malt.trainer.get_default_trainer(),
        merchant=malt.agents.merchant.DatasetMerchant(data),
        assayer=malt.agents.assayer.DatasetAssayer(data),

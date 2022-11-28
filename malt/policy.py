@@ -39,15 +39,15 @@ class Policy(torch.nn.Module, abc.ABC):
 # =============================================================================
 # MODULE CLASSES
 # =============================================================================
-class Greedy(Policy):
-    """ Greedy policy. """
+class UtilityFunction(Policy):
+    """ UtilityFunction policy. """
 
     def __init__(
         self,
-        utility_function=utility_functions.expected_improvement,
+        utility_function=utility_functions.expectation,
         acquisition_size: int = 1,
     ):
-        super(Greedy, self).__init__()
+        super(UtilityFunction, self).__init__()
         self.utility_function = utility_function
         self.acquisition_size = acquisition_size
 
@@ -66,9 +66,27 @@ class Greedy(Policy):
         )
         return idxs
 
+class ThompsonSampling(Policy):
+    def __init__(
+        self,
+        acquisition_size: int = 1,
+    ):
+        super().__init__()
+        self.acquisition_size = acquisition_size
+
+    def forward(
+        self, distribution: torch.distributions.Distribution
+    ) -> torch.Tensor:
+        sample = distribution.sample()
+        _, idxs = torch.topk(
+            sample,
+            self.acquisition_size,
+            dim=0,
+        )
+        return idxs
 
 class Random(Policy):
-    """ Greedy policy. """
+    """ UtilityFunction policy. """
 
     def __init__(
         self,
