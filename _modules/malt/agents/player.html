@@ -207,7 +207,7 @@
 <span class="sd">    ...            in_features=128,</span>
 <span class="sd">    ...        ),</span>
 <span class="sd">    ...    ),</span>
-<span class="sd">    ...    policy=malt.policy.UtilityFunction(),</span>
+<span class="sd">    ...    policy=malt.policy.Greedy(),</span>
 <span class="sd">    ...    trainer=malt.trainer.get_default_trainer(),</span>
 <span class="sd">    ...    merchant=malt.agents.merchant.DatasetMerchant(</span>
 <span class="sd">    ...        malt.data.collections.linear_alkanes(10),</span>
@@ -221,11 +221,10 @@
 <span class="sd">    ...     if player.step() is None:</span>
 <span class="sd">    ...         break</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="SequentialModelBasedPlayer.__init__"><a class="viewcode-back" href="../../../autosummary/malt.agents.player.SequentialModelBasedPlayer.html#malt.agents.player.SequentialModelBasedPlayer.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch_size</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="SequentialModelBasedPlayer.__init__"><a class="viewcode-back" href="../../../autosummary/malt.agents.player.SequentialModelBasedPlayer.html#malt.agents.player.SequentialModelBasedPlayer.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">SequentialModelBasedPlayer</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
             <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
-        <span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">batch_size</span> <span class="o">=</span> <span class="n">batch_size</span></div>
+        <span class="p">)</span></div>
 
     <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">best</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prioritize</span><span class="p">()</span>

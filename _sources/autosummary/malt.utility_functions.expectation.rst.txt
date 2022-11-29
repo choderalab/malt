@@ -1,6 +1,0 @@
-malt.utility\_functions.expectation
-===================================
-
-.. currentmodule:: malt.utility_functions
-
-.. autofunction:: expectation

@@ -99,7 +99,7 @@ Define player
 
     player = malt.agents.player.SequentialModelBasedPlayer(
         model=model,
-        policy=malt.policy.UtilityFunction(),
+        policy=malt.policy.Greedy(),
         trainer=malt.trainer.get_default_trainer(),
         merchant=merchant,
         assayer=assayer,
