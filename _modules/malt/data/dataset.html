@@ -482,7 +482,7 @@
 
     <span class="k">for</span> <span class="n">smiles</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">smiles_strings</span><span class="p">,</span> <span class="n">ys</span><span class="p">):</span>
         <span class="n">molecule</span> <span class="o">=</span> <span class="n">Molecule</span><span class="p">(</span><span class="n">smiles</span><span class="p">)</span>
-        <span class="n">molecule</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="n">y</span>
+        <span class="n">molecule</span><span class="o">.</span><span class="n">y</span> <span class="o">=</span> <span class="nb">float</span><span class="p">(</span><span class="n">y</span><span class="p">)</span>
         <span class="n">molecules</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">molecule</span><span class="p">)</span>
 
     <span class="k">return</span> <span class="n">Dataset</span><span class="p">(</span><span class="n">molecules</span><span class="p">)</span></div>
