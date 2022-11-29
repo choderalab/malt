@@ -415,7 +415,7 @@ def from_pandas(
 
     for smiles, y in zip(smiles_strings, ys):
         molecule = Molecule(smiles)
-        molecule.y = y
+        molecule.y = float(y)
         molecules.append(molecule)
 
     return Dataset(molecules)
