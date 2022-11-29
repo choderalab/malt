@@ -154,11 +154,10 @@ class SequentialModelBasedPlayer(ModelBasedPlayer):
     ...     if player.step() is None:
     ...         break
     """
-    def __init__(self, batch_size, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super(SequentialModelBasedPlayer, self).__init__(
             *args, **kwargs
         )
-        self.batch_size = batch_size
 
     def step(self):
         best = self.prioritize()
