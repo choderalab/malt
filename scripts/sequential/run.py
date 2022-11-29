@@ -27,12 +27,12 @@ def run(args):
         ),
     )
 
-    policy = getattr(malt.policy, args.policy)
-
+    
+    utility_function = getattr(malt.utility_functions, args.utility_function)
     from malt.agents.player import SequentialModelBasedPlayer
     player = SequentialModelBasedPlayer(
-       model=model,
-       policy=policy(acquisition_size=args.acquisition_size),
+       model = model,
+       policy=malt.policy.UtilityFunction(utility_function),
        trainer=malt.trainer.get_default_trainer(),
        merchant=malt.agents.merchant.DatasetMerchant(data),
        assayer=malt.agents.assayer.DatasetAssayer(data),
@@ -53,11 +53,10 @@ def run(args):
     key.pop("out")
     key = json.dumps(key)
     df = pd.DataFrame.from_dict(
-        {key: json.dumps(history)},
+        {key: [json.dumps(history)]},
          orient="index",
-         # columns=["vl", "te"]
     )
-    df.to_csv(args.out, mode="a")
+    df.to_csv(args.out, header=False, mode="a")
 
 if __name__ == "__main__":
     import argparse
@@ -72,5 +71,6 @@ if __name__ == "__main__":
     parser.add_argument("--out", type=str, default="out.csv")
     parser.add_argument("--acquisition_size", type=int, default=1)
     parser.add_argument("--policy", type=str, default="Greedy")
+    parser.add_argument("--utility_function", type=str, default="expectation")
     args = parser.parse_args()
     run(args)

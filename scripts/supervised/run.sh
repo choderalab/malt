@@ -6,6 +6,10 @@ for learning_rate in 1e-2 1e-3 1e-4
 do
 for reduce_factor in 0.5 0.75
 do
+for layer in GCN GAT
+do
+for regressor in nn gp
+do
 
 bsub -q gpuqueue -o %J.stdout -gpu "num=1:j_exclusive=yes" -R "rusage[mem=5] span[ptile=1]" -W 0:59 -n 1\
     python run.py \
@@ -13,7 +17,8 @@ bsub -q gpuqueue -o %J.stdout -gpu "num=1:j_exclusive=yes" -R "rusage[mem=5] spa
       --width $width \
       --learning_rate $learning_rate \
       --reduce_factor $reduce_factor \
-      --regressor nn \
+      --regressor regressor \
+      --layer $layer \
       --out $LSB_JOBID".csv"
 
-done; done; done; done
+done; done; done; done; done

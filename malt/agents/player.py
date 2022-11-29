@@ -140,7 +140,7 @@ class SequentialModelBasedPlayer(ModelBasedPlayer):
     ...            in_features=128,
     ...        ),
     ...    ),
-    ...    policy=malt.policy.Greedy(),
+    ...    policy=malt.policy.UtilityFunction(),
     ...    trainer=malt.trainer.get_default_trainer(),
     ...    merchant=malt.agents.merchant.DatasetMerchant(
     ...        malt.data.collections.linear_alkanes(10),
@@ -154,10 +154,11 @@ class SequentialModelBasedPlayer(ModelBasedPlayer):
     ...     if player.step() is None:
     ...         break
     """
-    def __init__(self, *args, **kwargs):
+    def __init__(self, batch_size, *args, **kwargs):
         super(SequentialModelBasedPlayer, self).__init__(
             *args, **kwargs
         )
+        self.batch_size = batch_size
 
     def step(self):
         best = self.prioritize()

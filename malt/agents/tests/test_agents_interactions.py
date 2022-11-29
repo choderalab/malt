@@ -24,7 +24,7 @@ def test_player_with_linear_alkane():
 
     player = SequentialModelBasedPlayer(
        model = model,
-       policy=malt.policy.Greedy(),
+       policy=malt.policy.UtilityFunction(),
        trainer=malt.trainer.get_default_trainer(),
        merchant=malt.agents.merchant.DatasetMerchant(dataset),
        assayer=malt.agents.assayer.DatasetAssayer(dataset),
