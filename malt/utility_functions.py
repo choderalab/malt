@@ -10,6 +10,8 @@ from typing import Union
 def random(distribution: torch.distributions.Distribution):
     return torch.randn(distribution.batch_shape)
 
+def expectation(distribution: torch.distributions.Distribution):
+    return distribution.mean
 
 def uncertainty(distribution: torch.distributions.Distribution):
     return distribution.variance

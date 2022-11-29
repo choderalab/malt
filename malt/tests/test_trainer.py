@@ -40,7 +40,7 @@ def test_training_on_linear_alkane_with_player():
         model=model,
         merchant=merchant,
         assayer=assayer,
-        policy=malt.policy.Greedy(),
+        policy=malt.policy.UtilityFunction(),
         trainer=malt.trainer.get_default_trainer(),
     )
 
