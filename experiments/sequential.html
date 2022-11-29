@@ -144,7 +144,7 @@ partition into training, validation, and test (80:10:10).</p>
 <h1>Define player<a class="headerlink" href="#define-player" title="Permalink to this headline"></a></h1>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">player</span> <span class="o">=</span> <span class="n">malt</span><span class="o">.</span><span class="n">agents</span><span class="o">.</span><span class="n">player</span><span class="o">.</span><span class="n">SequentialModelBasedPlayer</span><span class="p">(</span>
     <span class="n">model</span><span class="o">=</span><span class="n">model</span><span class="p">,</span>
-    <span class="n">policy</span><span class="o">=</span><span class="n">malt</span><span class="o">.</span><span class="n">policy</span><span class="o">.</span><span class="n">Greedy</span><span class="p">(),</span>
+    <span class="n">policy</span><span class="o">=</span><span class="n">malt</span><span class="o">.</span><span class="n">policy</span><span class="o">.</span><span class="n">UtilityFunction</span><span class="p">(),</span>
     <span class="n">trainer</span><span class="o">=</span><span class="n">malt</span><span class="o">.</span><span class="n">trainer</span><span class="o">.</span><span class="n">get_default_trainer</span><span class="p">(),</span>
     <span class="n">merchant</span><span class="o">=</span><span class="n">merchant</span><span class="p">,</span>
     <span class="n">assayer</span><span class="o">=</span><span class="n">assayer</span><span class="p">,</span>
