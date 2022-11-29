@@ -22,6 +22,8 @@ def expected_improvement(
     y_best: Union[torch.Tensor, float] = 0.0,
     n_samples: int = 64,
 ):
+    if isinstance(y_best, float):
+        y_best = torch.tensor(y_best, device=distribution.mean.device)
     improvement = torch.nn.functional.relu(
         distribution.sample(torch.Size([n_samples])) - y_best
     )
@@ -33,6 +35,8 @@ def probability_of_improvement(
     distribution: torch.distributions.Distribution,
     y_best: Union[torch.Tensor, float] = 0.0,
 ):
+    if isinstance(y_best, float):
+        y_best = torch.tensor(y_best, device=distribution.mean.device)
     return 1.0 - distribution.cdf(y_best)
 
 
