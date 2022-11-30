@@ -12,7 +12,7 @@ from dgl.nn.pytorch import GraphConv
 # =============================================================================
 # BASE CLASSES
 # =============================================================================
-class Representation(torch.nn.Module, abc.ABC):
+class Representation(torch.nn.Module):
     """Base class for a representation.
 
     Methods

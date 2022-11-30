@@ -12,7 +12,7 @@ gpytorch.settings.debug._state = False
 # =============================================================================
 # BASE CLASSES
 # =============================================================================
-class Regressor(torch.nn.Module, abc.ABC):
+class Regressor(torch.nn.Module):
     """Base class for a regressor.
 
     Parameters
@@ -62,7 +62,7 @@ class Regressor(torch.nn.Module, abc.ABC):
         nll = -posterior.log_prob(observation.unsqueeze(-1)).mean()
         return nll
 
-class NeuralNetworkLikelihood(abc.ABC):
+class NeuralNetworkLikelihood(object):
     @property
     @abc.abstractmethod
     def in_features(self):

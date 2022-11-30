@@ -2,17 +2,20 @@
 # =============================================================================
 # IMPORTS
 # =============================================================================
+import functools
 import abc
 import torch
 import gpytorch
+import pyro
 from typing import Any
 from .regressor import Regressor
 from .representation import Representation
+from .utils import to_pyro
 
 # =============================================================================
 # BASE CLASSES
 # =============================================================================
-class SupervisedModel(torch.nn.Module, abc.ABC):
+class SupervisedModel(torch.nn.Module):
     """A supervised model.
 
     Parameters
@@ -39,7 +42,7 @@ class SupervisedModel(torch.nn.Module, abc.ABC):
         representation: Representation,
         regressor: Regressor,
     ) -> None:
-        super(SupervisedModel, self).__init__()
+        super().__init__()
 
         assert representation.out_features == regressor.in_features
         self.representation = representation
@@ -56,3 +59,6 @@ class SupervisedModel(torch.nn.Module, abc.ABC):
         representation = self.representation(x)
         loss = self.regressor.loss(representation, y)
         return loss
+
+    def to_pyro(self):
+        return to_pyro(self)
