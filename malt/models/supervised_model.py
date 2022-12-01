@@ -60,5 +60,9 @@ class SupervisedModel(torch.nn.Module):
         loss = self.regressor.loss(representation, y)
         return loss
 
-    def to_pyro(self):
-        return to_pyro(self)
+    def to_pyro(
+            self,
+            guide: pyro.infer.autoguide.AutoGuide\
+                =pyro.infer.autoguide.AutoDelta,
+        ):
+        return to_pyro(self, guide=guide)
