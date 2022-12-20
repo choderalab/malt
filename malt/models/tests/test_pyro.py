@@ -44,10 +44,57 @@ def test_train():
         ),
     )
 
-    g, y = next(iter(dataset.view(batch_size=5)))
 
     trainer = malt.trainer.get_default_trainer_pyro(
-        n_epochs=10000, without_player=True,
+        n_epochs=10, without_player=True,
     )
 
-    model = trainer(model, dataset, dataset)
+    model, guide = trainer(model, dataset, dataset)
+
+def test_predictive():
+    import torch
+    import pyro
+    import malt
+    dataset = malt.data.collections.linear_alkanes(5)
+    model = malt.models.supervised_model.SupervisedModel(
+        representation=malt.models.representation.DGLRepresentation(
+            out_features=4
+        ),
+        regressor=malt.models.regressor.NeuralNetworkRegressor(
+            in_features=4,
+        ),
+    )
+
+    trainer = malt.trainer.get_default_trainer_pyro(
+        n_epochs=10, without_player=True,
+        guide="AutoDiagonalNormal",
+    )
+
+    g, y = next(iter(dataset.view(batch_size=5)))
+    model, guide = trainer(model, dataset, dataset)
+
+def test_gp():
+    import torch
+    import pyro
+    import malt
+    dataset = malt.data.collections.linear_alkanes(5)
+    model = malt.models.supervised_model.SupervisedModel(
+        representation=malt.models.representation.DGLRepresentation(
+            out_features=4
+        ),
+        regressor=malt.models.regressor.ExactGaussianProcessRegressor(
+            in_features=4,
+            num_points=1,
+        ),
+    )
+
+    trainer = malt.trainer.get_default_trainer_pyro(
+        n_epochs=10, without_player=True,
+        guide="AutoDiagonalNormal",
+    )
+
+    g, y = next(iter(dataset.view(batch_size=5)))
+    model, guide = trainer(model, dataset, dataset)
+
+
+    # predictive = pyro.infer.Predictive(model.parametrize, guide=guide, num_samples=100, return_sites=["_RETURN"])

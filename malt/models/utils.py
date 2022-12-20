@@ -1,4 +1,5 @@
 from typing import Any
+from collections import OrderedDict
 import functools
 import torch
 import pyro
@@ -22,11 +23,24 @@ def _wrap_pyro_model(model):
             self._model = model
 
         def forward(self, x, y=None):
+            if y is not None:
+                y = y.unsqueeze(-1)
             distribution = self._model(x)
-            distribution = torch.distributions.Independent(distribution, 1)
+            distribution = pyro.distributions.Independent(distribution, 1)
             with pyro.plate("observed_data"):
-                pyro.sample("obs", distribution, obs=y.unsqueeze(-1))
+                pyro.sample("obs", distribution, obs=y)
             return distribution
+
+        def parametrize(self, x, y=None):
+            if y is not None:
+                y = y.unsqueeze(-1)
+            distribution = self._model(x)
+            print(distribution.loc.flatten(), distribution.scale.flatten())
+
+            # distribution = pyro.distributions.Independent(distribution, 1)
+            # with pyro.plate("observed_data"):
+            #     pyro.sample("obs", distribution, obs=y)
+            # return distribution.mean, distribution.variance
 
     return WrappedModel(model)
 
@@ -55,17 +69,17 @@ def to_pyro(
     pyro.nn.module.to_pyro_module_(model)
 
     if guide != pyro.infer.autoguide.AutoDelta:
+        new_named_parameters = OrderedDict()
         for name, parameter in model.named_parameters():
             if "weight" in name:
-                setattr(
-                    model,
-                    name,
-                    pyro.nn.PyroSample(
-                        pyro.distributions.Normal(0, 1)
-                        .expand(parameter.shape)
-                        .to_event(parameter.shape[-1]),
-                    )
+                new_named_parameters[name] = pyro.nn.PyroSample(
+                    pyro.distributions.Normal(0, 1)
+                    .expand(parameter.shape)
+                    .to_event(len(parameter.shape))
                 )
+
+        for name, parameter in new_named_parameters.items():
+            _rsetattr(model, name, parameter)
 
 
     model = _wrap_pyro_model(model)

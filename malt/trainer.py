@@ -217,7 +217,6 @@ def get_default_trainer_pyro(
 
         # set up loss
         loss = pyro.infer.Trace_ELBO(1)
-        print(loss)
 
         # set up svi
         svi = pyro.infer.svi.SVI(
@@ -248,7 +247,8 @@ def get_default_trainer_pyro(
         model = model.to(original_device)
         model.train()
         model.eval()
-        return model
+        
+        return model, _guide
 
     def _default_trainer(
         player,
