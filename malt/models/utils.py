@@ -31,17 +31,6 @@ def _wrap_pyro_model(model):
                 pyro.sample("obs", distribution, obs=y)
             return distribution
 
-        def parametrize(self, x, y=None):
-            if y is not None:
-                y = y.unsqueeze(-1)
-            distribution = self._model(x)
-            print(distribution.loc.flatten(), distribution.scale.flatten())
-
-            # distribution = pyro.distributions.Independent(distribution, 1)
-            # with pyro.plate("observed_data"):
-            #     pyro.sample("obs", distribution, obs=y)
-            # return distribution.mean, distribution.variance
-
     return WrappedModel(model)
 
 # =============================================================================
