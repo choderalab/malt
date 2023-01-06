@@ -194,7 +194,7 @@ def get_default_trainer_pyro(
         # _guide = getattr(pyro.infer.autoguide, guide)
         # model, _guide = model.to_pyro(_guide)
 
-        model, guide = model.pyro_model, model.pyro_guide
+        model, guide = model.model, model.guide
 
         # consider the case of one batch
         if batch_size == -1:

@@ -7,7 +7,7 @@ def test_representation_convert():
     )
     dataset = malt.data.collections.linear_alkanes(5)
     g, y = next(iter(dataset.view(batch_size=5)))
-    y_hat = representation.pyro_model(g)
+    y_hat = representation.model(g)
     assert list(y_hat.shape) == [5, 128]
 
 def test_regressor_convert():
@@ -16,8 +16,8 @@ def test_regressor_convert():
     regressor=malt.models.regressor.NeuralNetworkRegressor(
         in_features=128,
     )
-    model = regressor.get_pyro_model()
-    guide = regressor.get_pyro_guide()
+    model = regressor.get_model()
+    guide = regressor.get_guide()
 
     h = torch.zeros(2, 128)
     y_hat = model(h)
@@ -37,7 +37,7 @@ def test_convert():
 
     dataset = malt.data.collections.linear_alkanes(5)
     g, y = next(iter(dataset.view(batch_size=5)))
-    y_hat = net.pyro_model(g, y)
+    y_hat = net.model(g, y)
 
 def test_train():
     import torch
