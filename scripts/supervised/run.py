@@ -23,7 +23,6 @@ def run(args):
         regressor=regressor(
             num_points=len(data_train),
             in_features=args.width,
-            # likelihood=malt.models.regressor.HomoschedasticGaussianLikelihood(),
         ),
     )
 

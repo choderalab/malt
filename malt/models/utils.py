@@ -38,7 +38,6 @@ def _wrap_pyro_model(model):
 # =============================================================================
 def to_pyro(
         model: Any,
-        guide: pyro.infer.autoguide.AutoGuide=pyro.infer.autoguide.AutoDelta,
     ) -> pyro.nn.PyroModule:
     """Convert a PyTorch module to pyro module.
 
@@ -57,21 +56,16 @@ def to_pyro(
     # convert model to pyro_model
     pyro.nn.module.to_pyro_module_(model)
 
-    if guide != pyro.infer.autoguide.AutoDelta:
-        new_named_parameters = OrderedDict()
-        for name, parameter in model.named_parameters():
-            if "weight" in name:
-                new_named_parameters[name] = pyro.nn.PyroSample(
-                    pyro.distributions.Normal(0, 1)
-                    .expand(parameter.shape)
-                    .to_event(len(parameter.shape))
-                )
+    new_named_parameters = OrderedDict()
+    for name, parameter in model.named_parameters():
+        if "weight" in name:
+            new_named_parameters[name] = pyro.nn.PyroSample(
+                pyro.distributions.Normal(0, 1)
+                .expand(parameter.shape)
+                .to_event(len(parameter.shape))
+            )
 
-        for name, parameter in new_named_parameters.items():
-            _rsetattr(model, name, parameter)
+    for name, parameter in new_named_parameters.items():
+        _rsetattr(model, name, parameter)
 
-
-    model = _wrap_pyro_model(model)
-    guide = guide(model)
-
-    return model, guide
+    return model

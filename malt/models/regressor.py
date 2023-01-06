@@ -6,6 +6,8 @@ import abc
 import torch
 from typing import Union, Optional
 import gpytorch
+import pyro
+from .utils import to_pyro
 gpytorch.settings.debug._state = False
 
 
@@ -23,7 +25,7 @@ class Regressor(torch.nn.Module):
     """
 
     def __init__(self, in_features, *args, **kwargs):
-        super(Regressor, self).__init__()
+        super().__init__()
         self.in_features = in_features
 
     def forward(self, representation):
@@ -62,12 +64,24 @@ class Regressor(torch.nn.Module):
         nll = -posterior.log_prob(observation.unsqueeze(-1)).mean()
         return nll
 
-class NeuralNetworkLikelihood(object):
-    @property
-    @abc.abstractmethod
-    def in_features(self):
-        raise NotImplementedError
+def _wrap_pyro_model(model):
+    class WrappedModel(pyro.nn.PyroModule):
+        def __init__(self, model):
+            super().__init__()
+            self._model = model
 
+        def forward(self, x, y=None):
+            if y is not None:
+                y = y.unsqueeze(-1)
+            distribution = self._model(x)
+            distribution = pyro.distributions.Independent(distribution, 1)
+            with pyro.plate("observed_data"):
+                pyro.sample("obs", distribution, obs=y)
+            return distribution
+
+    return WrappedModel(model)
+
+class NeuralNetworkLikelihood(object):
     @abc.abstractmethod
     def __call__(self, *args, **kwargs):
         raise NotImplementedError
@@ -96,7 +110,9 @@ class HeteroschedasticGaussianLikelihood(NeuralNetworkLikelihood):
     """
     in_features = 2
     def __call__(self, mu, log_sigma):
-        return torch.distributions.Normal(mu, log_sigma.exp())
+        return torch.distributions.Normal(
+            mu, log_sigma.exp(), validate_args=False,
+        )
 
 class HomoschedasticGaussianLikelihood(NeuralNetworkLikelihood):
     """Models a homoschedastic Gaussian likelihood to be used with
@@ -119,7 +135,9 @@ class HomoschedasticGaussianLikelihood(NeuralNetworkLikelihood):
     """
     in_features = 1
     def __call__(self, mu):
-        return torch.distributions.Normal(mu, torch.ones_like(mu))
+        return torch.distributions.Normal(
+            mu, torch.ones_like(mu), validate_args=False,
+        )
 
 class NeuralNetworkRegressor(Regressor):
     """ Regressor with neural network.
@@ -156,6 +174,10 @@ class NeuralNetworkRegressor(Regressor):
         super(NeuralNetworkRegressor, self).__init__(
             in_features=in_features,
         )
+
+        self._pyro_model = None
+        self._pyro_guide = None
+
         # bookkeeping
         self.in_features = in_features
         self.hidden_features = hidden_features
@@ -179,6 +201,26 @@ class NeuralNetworkRegressor(Regressor):
         parameters = self.ff(x).split(1, dim=-1)
         posterior = self.likelihood(*parameters)
         return posterior
+
+    def get_pyro_model(self):
+        if self._pyro_model is None:
+            self._pyro_model = _wrap_pyro_model(to_pyro(self))
+        return self._pyro_model
+
+    def get_pyro_guide(self):
+        model = self.get_pyro_model()
+        guide = pyro.infer.autoguide.AutoNormal(model)
+        return guide
+
+    def pyro_model(self, x, y=None):
+        model = self.get_pyro_model()
+        return model(x, y)
+
+    def pyro_guide(self, x, y=None):
+        guide = self.get_pyro_guide()
+        return guide(x, y)
+
+    
 
 class _ExactGaussianProcess(gpytorch.models.ExactGP):
     def __init__(self, inputs, targets):

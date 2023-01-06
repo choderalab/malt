@@ -143,7 +143,7 @@ def get_default_trainer_pyro(
     without_player: bool = False,
     min_learning_rate: float = 1e-6,
     no_validation_threshold: int = 20,
-    guide: str = "AutoDelta",
+    # guide: str = "AutoDelta",
 ):
     """ Get the default training scheme for pyro models.
 
@@ -191,8 +191,10 @@ def get_default_trainer_pyro(
 
         # move model to cuda if available
         model = model.to(device)
-        _guide = getattr(pyro.infer.autoguide, guide)
-        model, _guide = model.to_pyro(_guide)
+        # _guide = getattr(pyro.infer.autoguide, guide)
+        # model, _guide = model.to_pyro(_guide)
+
+        model, guide = model.pyro_model, model.pyro_guide
 
         # consider the case of one batch
         if batch_size == -1:
@@ -220,7 +222,7 @@ def get_default_trainer_pyro(
 
         # set up svi
         svi = pyro.infer.svi.SVI(
-            model=model, guide=_guide, optim=scheduler,
+            model=model, guide=guide, optim=scheduler,
             loss=loss,
         )
 
@@ -234,7 +236,7 @@ def get_default_trainer_pyro(
             with torch.no_grad():
                 x = next(iter(data_valid))
                 x = (_x.to(device) for _x in x)
-                _loss = loss.loss(model, _guide, *x)
+                _loss = loss.loss(model, guide, *x)
                 scheduler.step(_loss)
                 if next(
                         iter(scheduler.get_state().values())
@@ -248,7 +250,7 @@ def get_default_trainer_pyro(
         model.train()
         model.eval()
         
-        return model, _guide
+        return model, guide
 
     def _default_trainer(
         player,
