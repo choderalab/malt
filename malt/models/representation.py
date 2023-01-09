@@ -28,8 +28,8 @@ class Representation(torch.nn.Module):
     def __init__(self, out_features, *args, **kwargs) -> torch.Tensor:
         super(Representation, self).__init__()
         self.out_features = out_features
-        self._model = None
-        self._guide = None
+        self._pyro_model = None
+        self._pyro_guide = None
 
     @abc.abstractmethod
     def forward(self, g) -> torch.Tensor:
@@ -42,24 +42,24 @@ class Representation(torch.nn.Module):
         """
         raise NotImplementedError
 
-    def get_model(self):
-        if self._model is None:
-            self._model = to_pyro(self)
-        return self._model
+    def get_pyro_model(self):
+        if self._pyro_model is None:
+            self._pyro_model = to_pyro(self)
+        return self._pyro_model
 
-    def get_guide(self):
-        model = self.get_model()
+    def get_pyro_guide(self):
+        model = self.get_pyro_model()
         guide = pyro.infer.autoguide.AutoNormal(
             model, # pyro.infer.autoguide.init_to_value(dict(self.named_parameters()))
         )
         return guide
 
-    def model(self, x):
-        model = self.get_model()
+    def pyro_model(self, x):
+        model = self.get_pyro_model()
         return model(x)
 
-    def guide(self, x):
-        guide = self.get_guide()
+    def pyro_guide(self, x):
+        guide = self.get_pyro_guide()
         return guide(x)
 
 # =============================================================================

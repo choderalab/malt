@@ -64,7 +64,7 @@ class Regressor(torch.nn.Module):
         nll = -posterior.log_prob(observation.unsqueeze(-1)).mean()
         return nll
 
-def _wrap_model(model):
+def _wrap_pyro_model(model):
     class WrappedModel(pyro.nn.PyroModule):
         def __init__(self, model):
             super().__init__()
@@ -175,8 +175,8 @@ class NeuralNetworkRegressor(Regressor):
             in_features=in_features,
         )
 
-        self._model = None
-        self._guide = None
+        self._pyro_model = None
+        self._pyro_guide = None
 
         # bookkeeping
         self.in_features = in_features
@@ -202,23 +202,25 @@ class NeuralNetworkRegressor(Regressor):
         posterior = self.likelihood(*parameters)
         return posterior
 
-    def get_model(self):
-        if self._model is None:
-            self._model = _wrap_model(to_pyro(self))
-        return self._model
+    def get_pyro_model(self):
+        if self._pyro_model is None:
+            self._pyro_model = _wrap_pyro_model(to_pyro(self))
+        return self._pyro_model
 
-    def get_guide(self):
-        model = self.get_model()
+    def get_pyro_guide(self):
+        model = self.get_pyro_model()
         guide = pyro.infer.autoguide.AutoNormal(model)
         return guide
 
-    def model(self, x, y=None):
-        model = self.get_model()
+    def pyro_model(self, x, y=None):
+        model = self.get_pyro_model()
         return model(x, y)
 
-    def guide(self, x, y=None):
-        guide = self.get_guide()
+    def pyro_guide(self, x, y=None):
+        guide = self.get_pyro_guide()
         return guide(x, y)
+
+    
 
 class _ExactGaussianProcess(gpytorch.models.ExactGP):
     def __init__(self, inputs, targets):

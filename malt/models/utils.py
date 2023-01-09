@@ -16,7 +16,7 @@ def _rsetattr(obj, attr, val):
     pre, _, post = attr.rpartition('.')
     return setattr(_rgetattr(obj, pre) if pre else obj, post, val)
 
-def _wrap_model(model):
+def _wrap_pyro_model(model):
     class WrappedModel(pyro.nn.PyroModule):
         def __init__(self, model):
             super().__init__()
@@ -53,7 +53,7 @@ def to_pyro(
 
 
     """
-    # convert model to model
+    # convert model to pyro_model
     pyro.nn.module.to_pyro_module_(model)
 
     new_named_parameters = OrderedDict()

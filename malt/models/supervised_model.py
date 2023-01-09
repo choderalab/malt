@@ -60,12 +60,12 @@ class SupervisedModel(torch.nn.Module):
         loss = self.regressor.loss(representation, y)
         return loss
 
-    def guide(self, x, y=None):
+    def pyro_guide(self, x, y=None):
         x = self.representation(x)
-        posterior = self.regressor.guide(x)
+        posterior = self.regressor.pyro_guide(x)
         return posterior
 
-    def model(self, x, y=None):
-        representation = self.representation.model(x)
-        posterior = self.regressor.model(representation)
+    def pyro_model(self, x, y=None):
+        representation = self.representation.pyro_model(x)
+        posterior = self.regressor.pyro_model(representation)
         return posterior
