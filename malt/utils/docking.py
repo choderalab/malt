@@ -31,7 +31,7 @@ def vina_docking(smiles, protein):
 
         else:
             os.system(
-                "cp %s %s" % (protein, tempdirname),
+                "cp %s %s/protein.pdb" % (protein, tempdirname),
             )
 
         os.system(
